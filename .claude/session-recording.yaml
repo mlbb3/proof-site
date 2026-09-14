@@ -1,0 +1,8 @@
+project: proof-site
+notion:
+  parent_type: page_id
+  parent_id: 3dbbfbec-442d-81c7-ab1d-e392baedeb6c
+  parent_name: "Proof page, build docs (14 Sep 2026)"
+  last_handover_id: 3dbbfbec-442d-81c7-ab1d-e392baedeb6c
+cached_at: 2026-09-14T11:50:00Z
+repo_handover_path: docs/superpowers/handovers/
