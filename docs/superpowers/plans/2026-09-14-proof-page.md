@@ -163,6 +163,8 @@ Expected: dependencies install, `package-lock.json` created, no errors.
 Run: `node -v`
 Expected: v20.x or higher.
 
+- [ ] **Step 9b: Smoke-test the build pipeline BEFORE any other task.** Create a throwaway `public/styles/tmp.css` (`body{color:#111}`), a one-line `scripts/build-html.mjs` that writes an `index.html` linking `/styles/tmp.css` and `/src/main.js`, then run `npm run build`. Confirm `dist/index.html` exists, references the CSS, and the page loads under `npm run preview`. This proves the static-CSS + Vite-bundled-JS approach works before the real files depend on it. Delete `tmp.css` after. If `npm run build` fails here, fix the asset approach now, not in Task 5.
+
 - [ ] **Step 10: Commit**
 
 ```bash
@@ -175,16 +177,16 @@ git commit -m "Scaffold Vite project for proof page"
 ## Task 2: Design tokens and base styles
 
 **Files:**
-- Create: `src/styles/tokens.css` (copied from `.design/proof-site/DESIGN_TOKENS.css`)
-- Create: `src/styles/base.css`
+- Create: `public/styles/tokens.css` (copied from `.design/proof-site/DESIGN_TOKENS.css`)
+- Create: `public/styles/base.css`
 - Create: `public/fonts/` (self-hosted woff2, added in Step 4)
 
 - [ ] **Step 1: Copy the token file verbatim**
 
-Run: `cp .design/proof-site/DESIGN_TOKENS.css src/styles/tokens.css`
+Run: `cp .design/proof-site/DESIGN_TOKENS.css public/styles/tokens.css`
 Do not edit it. It is the single source of colour, type, space and motion tokens. If Max later changes the font or highlighter, change it there.
 
-- [ ] **Step 2: Create `src/styles/base.css`**
+- [ ] **Step 2: Create `public/styles/base.css`**
 
 ```css
 /* Reset and page ground. Light mode only, by rule. Background is set on html, body
@@ -256,7 +258,7 @@ ls -la public/fonts/
 
 Expected: three `.woff2` files, each a few KB to ~30KB, non-empty.
 
-- [ ] **Step 4: Add `@font-face` rules to the top of `src/styles/tokens.css`**
+- [ ] **Step 4: Add `@font-face` rules to the top of `public/styles/tokens.css`**
 
 Prepend (adjust family name and filenames if Max chose another family):
 
@@ -271,7 +273,7 @@ The token `--font-text` already lists a metric-matched fallback stack (`"Helveti
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/styles/tokens.css src/styles/base.css public/fonts/
+git add public/styles/tokens.css public/styles/base.css public/fonts/
 git commit -m "Add design tokens, base styles and self-hosted fonts"
 ```
 
@@ -795,10 +797,10 @@ const html = `<!doctype html>
 <meta property="og:description" content="A morning brief, drafted overnight. Watch it run.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="/og.png">
-<link rel="stylesheet" href="/src/styles/tokens.css">
-<link rel="stylesheet" href="/src/styles/base.css">
-<link rel="stylesheet" href="/src/styles/layout.css">
-<link rel="stylesheet" href="/src/styles/components.css">
+<link rel="stylesheet" href="/styles/tokens.css">
+<link rel="stylesheet" href="/styles/base.css">
+<link rel="stylesheet" href="/styles/layout.css">
+<link rel="stylesheet" href="/styles/components.css">
 </head>
 <body>
 ${body}
@@ -839,10 +841,10 @@ git commit -m "Generate static end-state HTML from content and copy"
 This is the highest-risk file for the "finished, not sparse" gate. Use exact values, not adjectives. Precision-instrument means: a measured column, true hairline rules, big deliberate margins, tabular alignment, the highlighter used only on marks and the two buttons.
 
 **Files:**
-- Create: `src/styles/layout.css`
-- Create: `src/styles/components.css`
+- Create: `public/styles/layout.css`
+- Create: `public/styles/components.css`
 
-- [ ] **Step 1: Create `src/styles/layout.css`**
+- [ ] **Step 1: Create `public/styles/layout.css`**
 
 ```css
 /* Measured column and generous margins. Single column on phone/tablet; two columns above
@@ -889,7 +891,7 @@ This is the highest-risk file for the "finished, not sparse" gate. Use exact val
 }
 ```
 
-- [ ] **Step 2: Create `src/styles/components.css`**
+- [ ] **Step 2: Create `public/styles/components.css`**
 
 ```css
 /* Precision-instrument components. Hairline rules, tabular alignment, one highlighter. */
@@ -1043,7 +1045,7 @@ Expected: the page now reads as a ruled instrument. Manually check on a 390px wi
 - [ ] **Step 4: Commit**
 
 ```bash
-git add src/styles/layout.css src/styles/components.css
+git add public/styles/layout.css public/styles/components.css
 git commit -m "Add precision-instrument layout and component styles"
 ```
 
@@ -1091,7 +1093,7 @@ for (const f of srcFiles) {
 }
 
 // 2. Light mode: color-scheme: light present; background set on html, body, section.
-const css = walk(path.join(root, "src/styles"), [".css"]).map((f) => fs.readFileSync(f, "utf8")).join("\n");
+const css = walk(path.join(root, "public/styles"), [".css"]).map((f) => fs.readFileSync(f, "utf8")).join("\n");
 if (!/color-scheme:\s*light/.test(css)) fails.push("color-scheme: light not found in CSS");
 if (!/html,\s*body\s*\{[^}]*background/.test(css)) fails.push("no background on html/body");
 if (!/section\s*\{[^}]*background/.test(css)) fails.push("no background on section");
@@ -1648,7 +1650,7 @@ const html = `<!doctype html><meta charset="utf-8">
   <p class="line"><mark>3 new enquiries.</mark> Replies drafted, waiting for you.</p>
 </div>`;
 
-const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || "/opt/pw-browsers/chromium/chrome-linux/chrome" });
+const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
 await page.setContent(html, { waitUntil: "networkidle" });
 fs.mkdirSync("public", { recursive: true });
@@ -1688,7 +1690,7 @@ import { chromium } from "playwright";
 import assert from "node:assert/strict";
 
 const URL = process.env.PREVIEW_URL || "http://localhost:4173"; // vite preview
-const CHROME = process.env.PW_CHROMIUM || "/opt/pw-browsers/chromium/chrome-linux/chrome";
+const CHROME = process.env.PW_CHROMIUM || undefined; // Playwright resolves via PLAYWRIGHT_BROWSERS_PATH
 
 const browser = await chromium.launch({ executablePath: CHROME });
 const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -1749,3 +1751,9 @@ git push -u origin claude/exciting-einstein-f45sem
 ## Open items the plan cannot decide (need Max)
 - Font family (default Archivo), highlighter colour (default tuned yellow), headline (default A), WhatsApp number, footer email.
 - Whether to buy a domain now or after three sends (brief says after).
+
+## Stress-test findings that need a decision before/while building
+- **Timesheet and job-book density vs the one-viewport gate.** `content.js` has 6 timesheet rows and 4 job rows, but the spec's gate is "3-4 rows, each block <= 390px tall". As designed these two blocks will FAIL `test/visual-check.mjs`. The storyboard also animates six timesheet rows. Reconcile before building those blocks: either (a) condense the timesheet to the flagged row + totals with a "6 staff, 47.5 of 48.0 logged" summary line, or (b) relax the gate for these two blocks to ~1.3 viewports. This is a design-doc contradiction (brief vs data/storyboard); Max decides. Default if unattended: option (a), condense, and log it ASSUMED.
+- **Replay fidelity (Task 10) is the weakest-specified, highest-craft task.** It gives exact GSAP patterns and a working skeleton but not every keyframe. Handing it to a weak model is the main quality risk. Decide: expand Task 10 to full keyframes first, or assign Task 10 to a stronger model while a cheaper one does Tasks 1-9, 11.
+- **Vercel function tracing.** Confirm `api/draft.js` importing `../src/data/content.js` is bundled by Vercel (it should trace the import). If not, inline `draftSystemPrompt` into `api/` from a shared build step.
+
