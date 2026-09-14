@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [{
+      "hooks": [{
+        "type": "command",
+        "command": "$CLAUDE_PROJECT_DIR/.claude/skills/session-recording/scripts/session-start.sh"
+      }]
+    }],
+    "PreCompact": [{
+      "hooks": [{
+        "type": "command",
+        "command": "$CLAUDE_PROJECT_DIR/.claude/skills/session-recording/scripts/pre-compact-checkpoint.sh"
+      }]
+    }]
+  }
+}
