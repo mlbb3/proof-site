@@ -2,10 +2,13 @@
 
 You are reviewing a design spec and an implementation plan for what is now a permanent web presence, with no prior context. Your job is to attack them from every useful angle and make them dramatically better, or tell me the whole approach is wrong. Be ruthless and be ambitious. This is the author's professional calling card and he is willing to spend heavily to make it exceptional, so "cut this, it is over-built" and "this is not ambitious enough, here is what world-class looks like" are both exactly what I want. I would rather you overreach than be polite. I have listed what I already know is weak at the end; go past it.
 
-## What you are reviewing (attach these)
-1. `2026-09-14-proof-page-design.md` (the SPEC, including the "Version 2: Living proof system" section at the end, which is the current scope).
-2. `2026-09-14-proof-page.md` (the PLAN, task-by-task build instructions; written for the pre-v2 one-off scope, so judge it as the Phase 1 spine, not the whole system).
-3. Context, not under review: `DESIGN_BRIEF.md`, `INFORMATION_ARCHITECTURE.md`, `STORYBOARD.md`, `COPY.md`, `content.js`, `RESEARCH.md`, `HANDOVER.md`.
+## You have the repository, read it yourself
+You have full read access to `mlbb3/proof-site` on branch `claude/exciting-einstein-f45sem` (also open as pull request #1). Do not rely on my summaries below; read the files and judge them directly. Where my summary and a file disagree, trust the file and flag the discrepancy as a finding.
+
+Read in this order:
+1. `docs/superpowers/specs/2026-09-14-proof-page-design.md` (the SPEC; the "Version 2: Living proof system" section at the end is the current scope and supersedes the earlier one-off framing).
+2. `docs/superpowers/plans/2026-09-14-proof-page.md` (the task-by-task build PLAN; judge it as the Phase 1 spine, and sanity-check its actual code, not just its structure).
+3. `.design/proof-site/`: `DESIGN_BRIEF.md`, `INFORMATION_ARCHITECTURE.md`, `STORYBOARD.md`, `COPY.md`, `content.js`, `RESEARCH.md`, `HANDOVER.md` (the locked inputs the spec was built from).
 
 ## Who this is for and what it must do
 Max is a solo AI-automation consultant. After a call with a small-business owner he sends them a single hosted page as proof that "your admin can run itself." The page must do two jobs at once: prove the system works, and prove Max can build to a standard that makes a skeptical owner trust him. In 2026 a mediocre-looking page reads as AI slop and kills the pitch. The fictional prospect is Dan, an eight-person plumbing firm in Kent, reading on his phone in the WhatsApp in-app browser, in 40 seconds, already burned by three chatbot-and-Zapier pitches this month. Success is a reply on WhatsApp or a booked scoping call.
@@ -42,7 +45,17 @@ Speak from whichever seat is most damaging per point: skeptical staff frontend e
 - The replay is specced as patterns plus a skeleton, not full keyframes: highest craft risk if a weak model builds it.
 - The author's own failure pattern is building instead of sending; the raised scope risks becoming a beautiful thing that never ships. Phasing is meant to counter this. Attack whether the phasing is real or a fig leaf.
 
-## What I want back
-Ranked findings, most damaging first. For each: the seat you speak from, the specific claim, the concrete change. Explicitly separate "cut, over-built" from "add, under-built." If the whole approach is wrong, lead with that and give me the alternative. Two closing lines: "what makes this fail in front of the first real prospect," and "what would make a peer designer or engineer stop and ask how it was built."
+## How to review
+Before you attack, steelman: one tight paragraph making the strongest case FOR the current approach, drawn from the files. Then break it. This stops the review being lazy contrarianism.
 
-Do not soften and do not defer to the constraints. Tell me where they are hurting the outcome; I will reconcile.
+Then rewrite, do not just critique. For copy, give the actual replacement lines. For the signature craft moment (the spec deliberately leaves it open), name the specific technique and how to build it. For any "this is wrong", give the alternative you would ship. You can read the plan's code, so verify the technical choices (GSAP, Vite, static CSS, the Vercel function, Upstash) against the actual code and flag anything that will not work, with the file and line.
+
+## What I want back
+Ranked findings, most damaging first. For each: the seat you speak from; severity (kills it / weakens it / polish); the specific claim with a file reference; the concrete change; and your confidence (high / medium / low). Separate "cut, over-built" from "add, under-built" explicitly.
+
+Then three closing pieces:
+- **The one change that matters most.** If Max does exactly one thing from your review, what is it and why.
+- **The ceiling.** Ignoring the current plan entirely, describe the single most impressive version of this that a world-class studio would ship for this exact goal and audience, so I know what I am leaving on the table.
+- **The two failure lines:** "what makes this fail in front of the first real prospect," and "what would make a peer designer or engineer stop and ask how it was built."
+
+If the whole approach is wrong, lead with that and give the alternative. Do not soften and do not defer to the constraints; tell me where they hurt the outcome and I will reconcile.
