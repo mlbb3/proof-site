@@ -10,6 +10,8 @@ with no access to this conversation. Where this spec and a `.design/proof-site/`
 wins on **stack, aesthetic and structure**; `COPY.md` and `content.js` win on **copy and data** and are
 locked.
 
+> **SCOPE RAISED 14 Sep (Max):** this is now a permanent LIVING PROOF SYSTEM and Max's calling card, not a one-off send, and copy is reopened. See **Version 2** at the end of this document; it supersedes sections 1, 2 and 5.1 where they conflict. The aesthetic system (3), stack (4), accessibility (10) and ship gates (15) still hold.
+
 ---
 
 ## 1. Goal
@@ -357,3 +359,34 @@ draft (step 4) is blocked. Sequence so the page is demonstrable before any accou
   high for the target; cut scenes.
 - The adversarial draft test cannot be made to pass without neutering the draft to uselessness -> the live
   call is not worth the risk; ship the sample-only draft.
+
+
+---
+
+## Version 2: Living proof system (raised scope, supersedes the one-off framing)
+
+Decision by Max, 14 Sep: the page is his calling card, permanent, at his own domain, and copy is reopened for a rewrite pass. This reverses the original brief's "not a website, not a funnel" on Max's explicit instruction. What is reversed and what is held:
+
+**Held (non-negotiable, unchanged):** still ONE page, proof not a funnel (a multi-page site was offered and rejected, correctly, as it invites comparison-shopping and undercuts proof-not-pitch). Still mobile-first, light-only, one highlighter, no em dash, tabular figures for numbers only, JS-off complete, nothing sends except the live calls, forced-light survival at 390px (consulting-core HTML check).
+
+**New capabilities.** Each is justified against the single goal (get the reply, or the call); anything that does not serve that is gold-plating and is cut.
+
+1. **Two front doors, one page.** Root (no query) is Max's permanent calling card: the generic proof, who he is, the three real builds, the reply. The personalised door (`?to=Name&trade=...&town=...`) is the same page reconfigured for a named prospect, sent after a call.
+
+2. **Per-trade reconfiguration.** The `?biz=` the brief deferred, now core. A small set of hand-built trade profiles (start with the trades Max actually prospects: plumbing, café, salon, house-clearance, creator), each a data object shaped like `content.js`, each with Max's sign-off on names, numbers and trade specifics. Generic fallback when the trade is unknown. NEVER auto-generate a trade at request time: a fabricated specific that is subtly wrong (a thing a real plumber would never say) is worse than generic and destroys the credibility the whole page is built on.
+
+3. **Two genuinely live surfaces, both text, both safe.** (a) the draft reply, as specced. (b) **live text-to-structure:** the viewer pastes messy text (an email, a list, a WhatsApp enquiry) and watches Claude turn it into structured rows in front of them, the "mess into order" thesis made interactive on their own words. NO file upload in v1: a real invoice carries third-party PII, legal and cost exposure; uploaded-document extraction is a later, gated capability, not part of this scope.
+
+4. **One signature craft moment.** A single, subtle, technically-extraordinary flourish inside the precision-instrument register (candidates: the highlighter rendered as a real ink stroke, or a device-accurate ruled baseline the brief snaps to). One, earned, still precision and never decoration. This does the "prove Max can build" job that separates expensive from clean, and is the thing a prompt-built page never reaches.
+
+5. **Quiet, privacy-clean engagement signal.** When a prospect opens their `?to=` link, Max gets a single server-side notification (opened, ran the replay, drafted). NO cookies, NO third-party analytics, NO fingerprinting, NO storing the viewer's input; the only identifier is the name Max himself placed in the link. This answers the "no analytics means Max is blind" gap and is itself a proof point (Max knows because he built the system). **Ethics gate: Max decides on principle; the page may state honestly that it notifies him.** This is the one item that needs an explicit yes from Max before build.
+
+**Phasing (the ship-fast spine; consulting-core avoidance check).** Max's logged pattern is building instead of sending; an ever-grander calling card is how that trap looks. Ambition is bound to Phase 1 shipping first.
+- **Phase 1 (ship within days):** the one-page proof for ONE real trade profile plus the draft reply, at frontier craft. This is the existing plan at the raised craft bar. Sendable to a live prospect. Nothing below delays this.
+- **Phase 2:** per-trade reconfiguration (2-3 profiles), the `?to=` personalisation, the engagement ping.
+- **Phase 3:** the second live surface (text-to-structure) and the signature craft moment.
+- **Later, gated:** uploaded-invoice extraction.
+
+**Copy (reopened).** A copywriting pass in Max's voice runs before Phase 1 build. Per consulting-core copy check: read Max's `voice.md` and run the humanizer BEFORE presenting any copy; Max signs off line by line; British English, £ symbol, no em dashes, no casual phrasing hardened into fact. Until that pass completes and Max signs off, `COPY.md` remains the working text.
+
+**Stack, reopened.** A living, personalised, multi-endpoint system is a stronger case for a light framework than a one-off page was. Flagged for the adversarial review; default remains vanilla plus Vite unless a stronger case is made.
