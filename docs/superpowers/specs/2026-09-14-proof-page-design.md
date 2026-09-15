@@ -1,5 +1,7 @@
 # Proof page: design spec
 
+> **SUPERSEDED 15 Sep 2026** by `docs/superpowers/specs/2026-09-15-proof-page-rebuild.md` after Astra's adversarial review. Kept for history; do not build from this.
+
 Date: 14 September 2026. Author: Claude Code session on branch `claude/exciting-einstein-f45sem`.
 Register: brand. Platform: web. Aesthetic lane: **precision instrument** (confirmed by Max, 14 Sep).
 

@@ -1,5 +1,7 @@
 # Proof Page Implementation Plan
 
+> **SUPERSEDED 15 Sep 2026** by the rebuild spec `docs/superpowers/specs/2026-09-15-proof-page-rebuild.md`. This plan contains verified defects; do not build from it. A new Phase 1 plan follows once the rebuild decisions are settled.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build the one-page "proof page" for Hartley Plumbing & Heating: a precision-instrument static page that is complete with JavaScript off, plus a tap-to-run GSAP replay and one live Claude-drafted reply.
