@@ -100,3 +100,17 @@ Resolved structure (this supersedes the earlier "one consequential example only"
 3. **A short capabilities strip** (n8n, Supabase, Claude) and Max's identity plus contact, early and on the first screen.
 
 Rules: breadth sits inside the hero's gravity (one shell, work nested), never a flat grid; never more than 4 proofs; never a decorative interaction; never a number without a visible source. The one axis every competitor ignores, and the one Max wins on, is making the proof inspectable.
+
+---
+
+## Real scope, verified from the data dictionary (live count 31 Aug 2026; re-verify at build)
+Papote is 118 base tables + 125 views = 243 objects (state it precisely; it is not "240+ tables"). It reconciles Roller (14,382 till transactions, 15,851 lifetime bookings, 9,642 attendance), Eitje labour (planned / realised / schedule), five supplier feeds (Bidfood, Steans, Ulmus, Zuivelrijck, rent/overhead) each with its own parse-failure quarantine, accounting GL (680 entries), and weather/holiday/flu demand context. The rigour is architectural and real: `figure_bases` (27 headline figures, each declaring six bases; two figures may only be compared, divided or subtracted if all six match), `dash_data_health` / `dash_feed_health` / `data_coverage` (count-based completeness that never guesses what it has not seen), per-supplier parse-failure quarantines, reconciliation views (period-vs-GL, payroll, daily revenue), and the Morning Brief with durable run/item/delivery history (brief_runs, brief_items, brief_deliveries). Any figure quoted on the page is re-verified by live query at build, per the client's own ethos.
+
+## The hero, made concrete (grounded in real architecture)
+"Click the number, see the receipt, and see what it may be compared to." The visitor clicks a headline figure; it expands to show the source rows/feed, the deterministic rule that produced it, and its declared basis (the six bases from `figure_bases`), including what it must NOT be compared to. That last part is the signature no competitor offers. The challenge-it interaction: alter a messy input and watch it refuse to invent, quarantine a non-reconciling document, or say "not established" rather than guess. Built with synthetic or redacted data; a real slice is available under Sophia's granted publication consent.
+
+## The three supporting proofs (real, named objects)
+1. **The Morning Brief beside its evidence** (brief_runs / brief_items / brief_deliveries; one delivered edition, one line, the evidence chain behind it, including a "not established").
+2. **Figures that know their basis** (`figure_bases` plus the VAT-basis correction that had understated every food-cost figure by 9%; framed as accuracy, never "money saved").
+3. **Ingestion that refuses to lie** (five supplier feeds; a document whose line items do not reproduce its own stated total is quarantined, not loaded; parse-failure counts shown honestly, and the unresolved Bidfood queue described as held-for-review, not a solved case).
+Plus a short stack strip (n8n, Supabase, Claude) and Max's identity and contact on the first screen. Sophia's publication consent is granted, so the real Morning Brief and the VAT correction are on the table.
