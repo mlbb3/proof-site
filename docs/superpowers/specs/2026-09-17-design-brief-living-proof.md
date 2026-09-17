@@ -2,7 +2,7 @@
 
 Date: 17 September 2026. Impeccable `shape` output, brand register. Supersedes the precision-instrument aesthetic (rejected by Max on sight, 17 Sep) and the "one page" composition (Max chose hub-and-spoke, 17 Sep). Keeps every honesty rule from `2026-09-15-proof-page-rebuild.md`; reopens motion, colour and register.
 
-Status: DRAFT for Max's confirmation. Nothing below is built until he confirms. Sections marked PENDING RESEARCH are filled from the colour, reference and type research once it lands.
+Status: PLANNING ONLY, by Max's instruction (17 Sep): no building until he says so, and frugal with credits. Locked by Max: the spec-sheet ledger lane, the deep teal, Barlow. Colour finalised from Max's own finca palette (terracotta, sage, ochre, warm stone as tints).
 
 ## 1. Feature summary
 
@@ -24,18 +24,19 @@ Brand register (design is the product). Max's OWN lane, not the cafe's: Papote's
 
 **Recommended lane: the spec-sheet ledger.** Three things nobody in the solo-consultant space combines: tool-brand colour commitment (one saturated hue on white, the way Makita or Bosch own a colour), newsroom-grade chart discipline (FT Visual, Reuters Graphics, Datawrapper: grey everything that is not data so one highlight lands; direct labels; annotations written as sentences), and Pudding-style proof where the reader watches numbers get captured, reconciled and settle into a decision on screen. The page reads like a printed spec sheet that has come alive: dates, counts and versions on the page (Field Notes honesty), one typeface family doing all the work, motion only where a number changes state. Research (17 Sep, search snippets; fetches were egress-blocked) found no competitor doing this.
 
-Alternative for Max to weigh: **newsroom-first.** The whole site in the FT Visual / Reuters register, charts leading every section, the pipeline told through animated charts and counters rather than a drawn schematic. Stronger for the desktop reader, weaker at showing "the machine" in the first 40 seconds.
+LOCKED by Max, 17 Sep: the spec-sheet ledger. (Newsroom-first was offered and not chosen.)
 
 Avoid, explicitly: editorial-typographic (italic serif, mono labels, three ruled columns), SaaS cream with cards, dark mode with glow, Stripe purple gradients, Linear dark minimalism, Framer agency templates, the rejected Braun flatness, and any copy of Papote's cafe brand (Baloo, pink and mint, rounded cards).
 
 ### Colour strategy: Committed, with a validated chart palette
 - Ground: pure white, `oklch(1 0 0)`. Light mode is a technical constraint (the WhatsApp in-app browser mishandles dark schemes) and, per impeccable, a warm cream ground is the 2026 AI cliche. Warmth and character live in the brand colour, the type and the charts, never in the body background.
-- Primary: a committed deep teal, the trades' blue (Makita `#007083` and Bosch Professional `#003E64` territory, per brand-colour aggregators). Proposed brand primary `#0a6f86`: 5.8:1 on white, so it carries text, the button, pipeline nodes and active states, 30 to 60% of the hero stage. One hue, two steps: the deep step is the brand; chart series slot 1 is the same hue stepped up to clear the dataviz chroma floor: `#0c789a` (validated 17 Sep, all checks PASS; still 5.0:1 on white). The deep step alone reads grey beside saturated series, which is why the two-step rule exists.
-- Green: one accent, Festool-adjacent and fully saturated (`#1a9a3c`, 3.7:1), used strictly as a STATE: reconciled, matched, decision made, and as the positive series when a series means good. Never headings, never body text, never a background. Always paired with a label or mark, per the dataviz status rule.
-- Held for review: the dataviz status warning amber `#fab219` with an icon and label (sub-3:1 by design; the pairing is the mitigation). A held document is a review, not an error; red is reserved for critical.
-- Pastels: tints of the primary and the green only, for chart fills, table bands and the captured-not-yet-verified state inside the stage. Never the page ground, never lavender, no hue-shifting gradients. Anchored by the saturated primary so they survive a cheap Android screen.
+- Primary: a committed deep teal, the trades' blue and the finca's blue-painted shutters (Makita `#007083` and Bosch `#003E64` territory). Brand primary `#0a6f86`: 5.8:1 on white, so it carries text, the button, pipeline nodes and active states, 30 to 60% of the hero stage. One hue, two steps: chart series slot 1 is the same hue stepped up to clear the dataviz chroma floor, `#0c789a` (5.0:1). The deep step alone reads grey beside other series.
+- Terracotta: the warm accent, from Max's own palette (Finca Ojen: "strong ochre / terracotta / warm stone", herringbone terracotta floors). `#c2593a`, 4.4:1: the held-document lift, the one warm emphasis in the stage, series slot 2. Never a background.
+- Green as a STATE, and it is sage: reconciled, matched, decision made. `#5a8f52`, 3.8:1, the kitchen-cabinet sage from the finca, not an electric green. Always paired with a label or mark. Doubles as the positive series when a series means good.
+- Held for review: the dataviz status warning amber `#fab219` with an icon and label (sub-3:1 by design; the pairing is the mitigation). A held document is a review, not an error; red `#d03b3b` is reserved for critical.
+- Tints, the pastels Max likes: light steps of the teal (`#cfe6ec`, `#e6f2f5`), terracotta (`#f3dcd3`), sage (`#e3ece0`) and a warm stone (`#f2ebe0`), for chart fills, table bands and the captured-not-yet-verified state inside the stage. The warm stone is a fill, never the page ground: Inside Ibiza's sand walls become stone-against-white here, because a sand page ground is the 2026 AI-cream tell and the WhatsApp browser wants a light scheme.
 - Grey: everything that is not data (Datawrapper's rule). Ink `#141414`, secondary `#4d4d4d` (8.5:1), rules and grid in light greys.
-- Chart palette: the dataviz reference order with slot 1 snapped to the primary's passing step: `[slot1], #eb6834, #1baf7a, #eda100, #e87ba4, #008300, #4a3aa7, #e34948`. Validated 17 Sep (light, surface #ffffff): lightness band PASS, chroma floor PASS, CVD separation PASS (worst adjacent dE 9.1), normal-vision floor PASS (19.6). One WARN: aqua, yellow and magenta sit under 3:1 on white, so those series always carry direct labels or a table view (the relief rule). Sequential ramp: the primary's own hue, 100 to 700, generated and validated with `--ordinal` at build; ordinal use starts no lighter than step 250. Diverging: primary vs red with a grey midpoint. Status colours fixed and never reused as series.
+- Chart palette, the earthy series, validated 17 Sep (light, surface #ffffff, all hard checks PASS: chroma floor, CVD worst adjacent dE 8.1, normal-vision floor 16.1): `#0c789a` teal, `#c2593a` terracotta, `#4e6cb3` shutter blue, `#907a22` olive, `#8a4f7d` plum, `#5a8f52` sage, `#c9962b` ochre, `#b23a3a` rust. The order is the colourblind-safety mechanism and is fixed. One WARN: ochre sits under 3:1 on white, so that series always carries direct labels or a table view (the relief rule). Sequential ramp: the teal's own hue, 100 to 700, generated and validated with `--ordinal` at build. Diverging: teal vs rust with a grey midpoint. Status colours fixed and never reused as series.
 
 ### Scene sentence (forces the theme)
 A cafe owner or a plumber, on a phone inside WhatsApp, in daylight, half-sceptical, forty seconds; then the same person at a laptop that evening wanting to see the working. Light, high contrast, confident colour, no glow.
@@ -52,7 +53,7 @@ Verified by search snippet (fetches egress-blocked); named so the lane is checka
 
 ### Typography
 One family doing all the work (brand.md: a single well-chosen family with committed weight and size contrast beats a timid pair). Three candidates, all Google Fonts, all with tabular figures confirmed, none on the reflex-reject list:
-- **Barlow** (recommended). A straight-sided grotesk drawn from California licence plates, highway signs and buses. The most blue-collar-native voice available; 3 widths by 9 weights, so Barlow Condensed handles axis and unit labels without a mono. Tabular numerals listed.
+- **Barlow** (LOCKED by Max, 17 Sep). A straight-sided grotesk drawn from California licence plates, highway signs and buses. The most blue-collar-native voice available; 3 widths by 9 weights, so Barlow Condensed handles axis and unit labels without a mono. Tabular numerals listed.
 - **Public Sans** (USWDS). Built "to allow for good data design with tabular figures"; civic, honest, no SaaS baggage. Slightly cooler voice.
 - **Red Hat Text** with Red Hat Display. Warmer and rounder, very comfortable at 16px; tabular figures confirmed. The softest of the three.
 Rules: body 16px minimum on the phone; decision lines 17px; modular scale 1.25 or more; `text-wrap: balance` on headings; tabular figures on every number column, proportional figures on a lone hero figure; no separate mono anywhere.
@@ -142,8 +143,8 @@ After the run: tapping a figure opens its inspect panel with a 220ms settle. Cha
 impeccable: `animate.md`, `layout.md`, `colorize.md`, `typeset.md`, then `audit` and `critique` before Max sees it. dataviz: `marks-and-anatomy.md`, `interaction.md`, `anti-patterns.md`, and the validator on every palette change. gsap-choreography for the timeline architecture and the reset block. The rebuild spec's defect register, every entry as a test.
 
 ## 10. Open questions for Max
-1. The lane: the spec-sheet ledger (recommended) or newsroom-first.
-2. The primary: confirm the deep teal, seen on the swatch sheet.
-3. The typeface: Barlow (recommended), Public Sans or Red Hat Text.
+1. Confirm the finca-tuned palette on the swatch sheet (teal, terracotta, sage, ochre, warm stone tints; electric series dropped).
+2. The white-ground trade-off: page stays pure white with warm stone as tints inside the stage and charts, or push warmer. Recommendation: white.
+3. When to start building. Nothing is built until Max says go; the first build step is the pipeline stage, then the 390 / 768 / 1280 screenshot gate.
 
-Asserted, not asked: production fidelity; spine plus `/papote`; autoplay once with Skip and Replay; pure white ground; the honesty ledger as a ruled ledger not tiles; the held document shown real and redacted; client artefacts shown in their own skin, labelled.
+Locked: lane (spec-sheet ledger), brand teal `#0a6f86`, Barlow, autoplay once with Skip and Replay, hub-and-spoke, production fidelity, the honesty ledger as a ruled ledger not tiles, the held document shown real and redacted, client artefacts in their own skin, copy last.
