@@ -1,27 +1,14 @@
 ---
 // The spine: the forwardable calling card at `/`.
-// Placeholder shell only. The figure_bases inspectable hero (build-order step 2),
-// the three proofs, the track-record block, the stack strip and contact follow.
-// Copy is LAST: labels here are placeholders, not approved copy.
+// Layer 1 of the proof (rigour): the inspectable hero.
+// The system layer (Morning Brief, reconcile-or-wait) and the pointer into the
+// deep Papote diagnosis spoke follow. Copy is LAST: labels are placeholders.
 import Base from '../layouts/Base.astro';
+import InspectableHero from '../components/InspectableHero.astro';
 ---
 
-<Base title="Max Brown, back-office automation" description="Placeholder. Copy is written last, against the finished build.">
+<Base title="Max Brown, back-office automation" description="Working example. Copy is written last, against the finished build.">
   <main>
-    <section aria-label="Hero (placeholder)">
-      <p class="placeholder">[ spine scaffold ] inspectable hero goes here</p>
-    </section>
+    <InspectableHero />
   </main>
 </Base>
-
-<style>
-  main {
-    max-width: var(--page-max);
-    margin-inline: auto;
-    padding: var(--space-6) var(--gutter);
-  }
-  .placeholder {
-    color: var(--ink-3);
-    font-size: var(--text-sm);
-  }
-</style>
