@@ -114,3 +114,8 @@ Papote is 118 base tables + 125 views = 243 objects (state it precisely; it is n
 2. **Figures that know their basis** (`figure_bases` plus the VAT-basis correction that had understated every food-cost figure by 9%; framed as accuracy, never "money saved").
 3. **Ingestion that refuses to lie** (five supplier feeds; a document whose line items do not reproduce its own stated total is quarantined, not loaded; parse-failure counts shown honestly, and the unresolved Bidfood queue described as held-for-review, not a solved case).
 Plus a short stack strip (n8n, Supabase, Claude) and Max's identity and contact on the first screen. Sophia's publication consent is granted, so the real Morning Brief and the VAT correction are on the table.
+
+---
+
+## Sequence correction (17 Sep, Max): COPY IS LAST
+Copy accompanies the build; it does not shape it. Build order: (1) scaffold (Astro, typed data, tokens); (2) design and build the inspectable hero panel ("click a number, see its source, its rule, and what it can't be compared to") with placeholder labels and synthetic-or-redacted Papote data; (3) build the three supporting proofs; (4) wire the one server function; (5) craft/motion and real-device pass; (6) ONLY THEN write the copy in Max's voice against the finished thing (voice.md + humanizer + line-by-line sign-off). Do not lead with copy or let unapproved copy gate the build.
