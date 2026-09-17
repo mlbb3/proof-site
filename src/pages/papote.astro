@@ -1,0 +1,29 @@
+---
+// A spoke: the deep Papote case study at `/papote`.
+// Durable, forwardable URL. Reached from the spine by an in-content link, not a nav.
+// Placeholder shell only. Summary-first: outcome in screen one, then anchored
+// sections, then method and numbers as expandable evidence. Carries a "who + back"
+// anchor so a forwarded spoke never orphans the reader.
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Papote, the working system" description="Placeholder. Deep case study spoke.">
+  <main>
+    <section aria-label="Papote case study (placeholder)">
+      <p class="placeholder">[ spoke scaffold ] deep Papote case study goes here</p>
+      <p class="placeholder"><a href="/">Back to the overview</a></p>
+    </section>
+  </main>
+</Base>
+
+<style>
+  main {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding: var(--space-6) var(--gutter);
+  }
+  .placeholder {
+    color: var(--ink-3);
+    font-size: var(--text-sm);
+  }
+</style>

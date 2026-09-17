@@ -1,0 +1,71 @@
+/* Base layer. Resets, light-mode enforcement, and prose defaults.
+   Every section sets its own background too (hard rule); this sets the ground. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--text-base);
+  line-height: var(--leading-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Every section carries its own background, by rule. */
+section {
+  background: var(--paper);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-heading);
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  max-width: var(--measure);
+}
+
+a {
+  color: inherit;
+}
+
+/* Figures are tabular, prose never. */
+.figure,
+time,
+[data-figure] {
+  font-family: var(--font-figures);
+  font-variant-numeric: var(--figures);
+}
+
+/* Focus is ink, never the highlighter. */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* The one highlighter, as a marker behind text. */
+.mark {
+  background: var(--mark);
+  padding-inline: var(--mark-pad-x);
+  border-radius: var(--radius-mark);
+  color: var(--ink-on-mark);
+}
