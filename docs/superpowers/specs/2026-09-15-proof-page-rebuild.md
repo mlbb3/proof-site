@@ -83,3 +83,20 @@ Papote (the café) is a large, live business-systems build: roughly 119 tables a
 
 ## Also found while researching: a live security exposure in Papote (separate from this page)
 Seven tables in the Papote Supabase have row-level security disabled (`owner_ideas`, `owner_idea_events`, `cafe_reference`, `party_reminder_drafts`, `party_deposit_settled`, `brief_countdowns`, `staging_bookingscore_20260831`), so the public anon key can read or write them. Not touched. Fixing it needs real access policies, not just enabling RLS. Track and fix in the Papote repo, not here.
+
+---
+
+## Composition RESOLVED: one inspectable hero + curated real breadth (research-backed, 17 Sep)
+A competitor and craft-benchmark study settles the "one example vs multiple" question. Method caveat: individual pages were egress-blocked, so findings are a web-search synthesis and specific competitor metrics are "as reported", not personally verified.
+
+Findings:
+- The AI-automation agency category is saturated with multiple static case studies, metric tiles and client logos, and NOT ONE competitor in the sample showed a genuinely live, inspectable proof. The interactivity ceiling is "filter case studies by industry". That is the gap Max can own outright.
+- Category best-practice sources favour fewer, deeper, provable: "one automation you can demo live beats five you can only describe"; "three hero case studies beat thirty generic ones".
+- The peer-impressive craft sites (Bruno Simon, Devouring Details, Rauno Freiberg, Cassie Evans, Emil Kowalski, Josh Comeau) all LEAD with ONE signature interactive moment and NEST breadth inside it, never a flat grid of equal tiles. In every case the interactive thing is a live demonstration of the exact skill being sold (Cassie proves SVG with SVG; Emil proves motion with live motion).
+
+Resolved structure (this supersedes the earlier "one consequential example only" framing; it keeps its rigor, the hero is the one deep inspectable thing, and honours the client's correct instinct to show breadth):
+1. **HERO: one deep, interactive, inspectable proof.** The differentiator ("never states a number it cannot prove") is SHOWN, not claimed. The visitor clicks any headline figure and watches it trace to its source rows, the deterministic rule, and the step that produced it: "click the number, see the receipt." This is Papote's actual architecture (evidence routes, figure_bases, deterministic Supabase rules) made visible, and it is the one thing no competitor offers. It doubles as the challenge-it moment: alter a messy input and watch it refuse to invent, holding a conflict for review rather than overwriting.
+2. **SUPPORTING BREADTH: exactly 3 (max 4) tight, real proofs**, each in the discipline's own format, trigger -> logic -> verified outcome, with every number shown next to its provenance. Pick the 3 strongest once the data dictionary is read. Candidates: the Morning Brief beside its evidence; the VAT-basis correction (framed as accuracy, not savings); the reconciliation-of-many-sources thesis (the real scale, ~119 tables and ~125 views that must agree); the supplier reconcile-or-refuse mechanism. Each honestly labelled per the four-label rule (illustration / working example / client artefact / measured outcome).
+3. **A short capabilities strip** (n8n, Supabase, Claude) and Max's identity plus contact, early and on the first screen.
+
+Rules: breadth sits inside the hero's gravity (one shell, work nested), never a flat grid; never more than 4 proofs; never a decorative interaction; never a number without a visible source. The one axis every competitor ignores, and the one Max wins on, is making the proof inspectable.
