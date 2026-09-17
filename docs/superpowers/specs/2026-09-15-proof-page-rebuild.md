@@ -64,3 +64,22 @@ The full list with file and line is in Astra's technical appendix. Verified in t
 - The real artefact is the strongest move but must not become a blocker; the honest "working example" fallback ships if permission is not obtainable quickly.
 - Astro is a good default, not mandatory; the actual fix is killing string-substitution, which vanilla can also do with a typed renderer.
 - Keep one meaningful motion; the review agrees, but it is worth stating that the answer to a janky six-scene replay is one honest transition, not zero craft.
+
+---
+
+## Papote grounding (the real system behind the proof) — added 17 Sep, from Astra's Papote briefing
+Papote (the café) is a large, live business-systems build: roughly 119 tables and 125 views, a private Next.js owner dashboard, an automated Morning Brief, supplier-invoice ingestion from five feeds, and Roller/Eitje reconciliation. Its value is NOT size. It is making fragmented records agree (cash vs earned revenue, scheduled vs approved hours, invoices vs order confirmations, owner decisions vs model suggestions) and refusing to state a number it cannot prove. People: Max leads the system with AI agents; Sophia owns and operates the café; Euan reads finance; Erwan the GM has left. Attribute builds to dated evidence, never "Max wrote every line".
+
+### Candidate flagship examples (all real; Max picks one; each needs its listed evidence before any public claim)
+- **Supplier invoice reconcile-or-refuse (recommended interactive).** A document's line items must reproduce its own stated ex-VAT total to the cent, or nothing loads and it is quarantined. Demonstrate with SYNTHETIC data. The real Bidfood parse-failures are an UNRESOLVED incident and must not be shown as a solved case.
+- **The Morning Brief beside its evidence (recommended real artefact).** One delivered edition, one brief line, and the evidence chain behind it, including where it says "not established" rather than inventing. Needs a specific delivered edition plus a permission-cleared image.
+- **A financial-basis correction.** For example the VAT-basis defect that had understated every food-cost figure by 9%. Frame as a truth/accuracy correction, NOT "money saved".
+
+## Publication and claim constraints (hard, from the Papote briefing)
+- Any real client identity, screenshot or private figure needs Sophia's recorded publication permission; confirm the engagement's paid/proof-of-concept status before describing it commercially. Until then the page uses synthetic data and carries no client-identifying detail.
+- Keep four labels strictly separate: illustration, working example, client artefact, measured outcome. The page must never let one borrow another's credibility.
+- Never claim "runs itself", "all feeds healthy", "15 automations live", hours saved, or revenue recovered without dated operational evidence and a defensible measurement.
+- Do not invent a testimonial, maintenance commitment or commercial result, and do not attribute every component to Max personally.
+
+## Also found while researching: a live security exposure in Papote (separate from this page)
+Seven tables in the Papote Supabase have row-level security disabled (`owner_ideas`, `owner_idea_events`, `cafe_reference`, `party_reminder_drafts`, `party_deposit_settled`, `brief_countdowns`, `staging_bookingscore_20260831`), so the public anon key can read or write them. Not touched. Fixing it needs real access policies, not just enabling RLS. Track and fix in the Papote repo, not here.
