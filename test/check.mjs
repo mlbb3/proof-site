@@ -36,6 +36,20 @@ function checkFile(path) {
   if (/%%/.test(text)) {
     failures.push(`${path}: doubled percent "%%" found (the 11%% defect)`);
   }
+
+  // Hard rule: the ground and panels come from tokens, never a raw hex. Any CSS
+  // file other than tokens.css that puts a raw hex in a background declaration is
+  // hardcoding a surface that should be a token (var(--ground) / var(--panel)).
+  if (path.endsWith('.css') && !path.endsWith('tokens.css')) {
+    if (/background[^;{}]*:[^;{}]*#[0-9a-fA-F]{3,8}/.test(text)) {
+      failures.push(`${path}: raw hex in a background declaration; use a token (var(--ground) / var(--panel))`);
+    }
+  }
+
+  // Hard rule: global.css must apply the type family, so Barlow reaches the page.
+  if (path.endsWith('src/styles/global.css') && !text.includes('var(--font)')) {
+    failures.push(`${path}: does not reference var(--font); Barlow must be applied here`);
+  }
 }
 
 walk(SRC);
