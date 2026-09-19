@@ -1,6 +1,34 @@
 ---
 import Base from '../layouts/Base.astro';
+import Identity from '../components/Identity.astro';
+import Stage from '../components/Stage.astro';
 ---
 <Base title="Max Brown, back-office automation" description="Working example. Copy is written last.">
-  <main><p>[ rebuilding ]</p></main>
+  <main>
+    <Identity />
+    <Stage />
+    <nav class="spoke-link" aria-label="Case study">
+      <a href="/papote">See the full Papote diagnosis</a>
+    </nav>
+  </main>
+
+  <style>
+    .spoke-link {
+      max-width: var(--page-max);
+      margin-inline: auto;
+      padding: 0 var(--gutter) var(--s8);
+    }
+
+    .spoke-link a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: var(--teal);
+      font-weight: var(--w-semi);
+      font-size: var(--text-md);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+    }
+  </style>
 </Base>

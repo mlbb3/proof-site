@@ -1,0 +1,491 @@
+---
+// The hero stage: the FINISHED (static, no-motion) state of the Papote pipeline,
+// on a white panel floating on the faint-teal ground. Three regions in order, each
+// introduced by a small dated section label in the spec-sheet manner:
+//   1. the supplier documents, one reconciling row per feed, the one that does not
+//      reconcile held for review;
+//   2. the three headline figures, each with its inspect panel;
+//   3. the composed Morning Brief, written from those figures.
+// Every node the later motion layer will move carries a data-stage-* attribute.
+// The counts in the caption are computed from the data, never hardcoded.
+// Fully server-rendered; complete and legible with JavaScript off.
+import Figure from './Figure.astro';
+import { DOCUMENTS } from '../data/documents';
+import { reconciles } from '../lib/reconcile';
+import { FIGURES } from '../data/figures';
+import { formatMoney } from '../lib/money';
+
+// The honest count, from the data.
+const total = DOCUMENTS.length;
+const held = DOCUMENTS.filter((doc) => !reconciles(doc)).length;
+const reconciled = total - held;
+
+const asOf = '19 Sep 2026';
+
+// The brief lines, synthetic, built from the figures above and reflecting the real
+// brief_items confidence classes: checked, one estimate, one excluded not guessed.
+const figureByKey = Object.fromEntries(FIGURES.map((figure) => [figure.key, figure]));
+const money = (key: string) =>
+  formatMoney(figureByKey[key].valueMinor, figureByKey[key].currency);
+
+const briefLines: Array<{ confidence: 'checked' | 'estimate' | 'excluded'; text: string }> = [
+  {
+    confidence: 'checked',
+    text: `An open day took ${money('open_day_take')}, once VAT and tips are out.`,
+  },
+  {
+    confidence: 'checked',
+    text: `${money('month_all_days')} came in over the month, closed-day party income counted in.`,
+  },
+  {
+    confidence: 'checked',
+    text: `${money('cash_recent_day')} landed in the account on the last recorded day, cash timing not sales.`,
+  },
+  {
+    confidence: 'estimate',
+    text: `On recent open days the average should hold near ${money('open_day_take')} into next week.`,
+  },
+  {
+    confidence: 'excluded',
+    text: 'Refunds netted against the month.',
+  },
+];
+---
+
+<section class="stage panel" aria-label="The pipeline, finished state">
+  <!-- Region 1: the supplier documents -->
+  <div class="region" data-stage-region="feeds">
+    <p class="region__label">
+      <span class="region__idx">01</span>
+      <span class="region__name">Supplier documents</span>
+      <span class="region__meta">supplier_registry &middot; as of {asOf}</span>
+    </p>
+
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th scope="col">Supplier</th>
+          <th scope="col">Invoice no</th>
+          <th scope="col" class="num">Line sum</th>
+          <th scope="col" class="num">Stated total</th>
+          <th scope="col">State</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          DOCUMENTS.map((doc) => {
+            const ok = reconciles(doc);
+            return (
+              <tr class={ok ? 'row' : 'row row--held'} data-stage-doc>
+                <td data-label="Supplier" class="row__supplier">{doc.supplier}</td>
+                <td data-label="Invoice no" class="row__inv">{doc.invoiceNo}</td>
+                <td data-label="Line sum" class="num">{formatMoney(doc.lineSumMinor, 'EUR')}</td>
+                <td data-label="Stated total" class="num">{formatMoney(doc.statedTotalMinor, 'EUR')}</td>
+                <td data-label="State">
+                  {ok ? (
+                    <span class="chip chip--matched">
+                      <svg class="chip__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path fill="none" stroke="currentColor" stroke-width="1.8" d="m3 8 3.2 3.4L13 5" />
+                      </svg>
+                      matched
+                    </span>
+                  ) : (
+                    <span class="chip chip--held">
+                      <svg class="chip__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path fill="none" stroke="currentColor" stroke-width="1.6" d="M4 2v12M4 2.5h7l-1.7 2.6L11 7.7H4" />
+                      </svg>
+                      held for review
+                    </span>
+                  )}
+                </td>
+              </tr>
+            );
+          })
+        }
+      </tbody>
+    </table>
+
+    <p class="ledger__caption">
+      {reconciled} of {total} reproduce their stated total; {held} held. A document
+      whose lines do not meet its stated total is held for review, not loaded, so a
+      mis-stated invoice never enters the figures.
+    </p>
+  </div>
+
+  <!-- Region 2: the three headline figures -->
+  <div class="region" data-stage-region="figures">
+    <p class="region__label">
+      <span class="region__idx">02</span>
+      <span class="region__name">Headline figures</span>
+      <span class="region__meta">figure_bases &middot; six bases each</span>
+    </p>
+
+    <div class="figures">
+      {FIGURES.map((figure) => <Figure figure={figure} />)}
+    </div>
+    <p class="figures__note">
+      Same word, different basis. Each figure declares six bases, and two figures are
+      comparable only if all six match. Open a figure to see what it cannot be set
+      beside.
+    </p>
+  </div>
+
+  <!-- Region 3: the composed Morning Brief -->
+  <div class="region region--last" data-stage-region="brief">
+    <p class="region__label">
+      <span class="region__idx">03</span>
+      <span class="region__name">Morning brief</span>
+      <span class="region__meta">brief_items &middot; working example</span>
+    </p>
+
+    <div class="brief">
+      <ul class="brief__list">
+        {
+          briefLines.map((line) => (
+            <li
+              class={
+                line.confidence === 'excluded' ? 'brief__line brief__line--excluded' : 'brief__line'
+              }
+              data-stage-briefline
+            >
+              {line.confidence === 'checked' && (
+                <svg class="brief__check" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path fill="none" stroke="currentColor" stroke-width="1.8" d="m3 8 3.2 3.4L13 5" />
+                </svg>
+              )}
+              <span class="brief__text">{line.text}</span>
+              {line.confidence === 'estimate' && <span class="chip chip--estimate">estimate</span>}
+              {line.confidence === 'excluded' && (
+                <span class="brief__excluded-note">excluded, not established</span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="brief__note">
+        Working example. Synthetic lines written from the figures above, reflecting
+        the real brief marking: checked, estimate, or excluded rather than guessed.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stage {
+    max-width: var(--page-max);
+    margin: var(--s4) auto var(--s7);
+    padding: var(--s5) var(--gutter) var(--s6);
+  }
+
+  .region {
+    padding-block: var(--s5);
+    border-bottom: var(--rule-w) solid var(--rule);
+  }
+
+  .region:first-of-type {
+    padding-top: 0;
+  }
+
+  .region--last {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .region__label {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--s2) var(--s3);
+    margin-bottom: var(--s4);
+  }
+
+  .region__idx {
+    color: var(--teal);
+    font-size: var(--text-sm);
+    font-weight: var(--w-bold);
+    font-variant-numeric: var(--figures);
+    letter-spacing: 0.04em;
+  }
+
+  .region__name {
+    color: var(--ink);
+    font-size: var(--text-md);
+    font-weight: var(--w-semi);
+  }
+
+  .region__meta {
+    color: var(--ink-3);
+    font-size: var(--text-sm);
+    font-weight: var(--w-med);
+    letter-spacing: 0.01em;
+  }
+
+  /* The ledger: a hairline-ruled spec sheet, not stat tiles. */
+  .ledger {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-base);
+  }
+
+  .ledger thead th {
+    text-align: left;
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    font-weight: var(--w-semi);
+    letter-spacing: 0.02em;
+    padding: 0 var(--s3) var(--s2);
+    border-bottom: var(--rule-w) solid var(--rule-strong);
+  }
+
+  .ledger .num {
+    text-align: right;
+    font-variant-numeric: var(--figures);
+  }
+
+  .ledger tbody td {
+    padding: var(--s3);
+    border-bottom: var(--rule-w) solid var(--rule);
+    vertical-align: middle;
+  }
+
+  .row__supplier {
+    font-weight: var(--w-med);
+    color: var(--ink);
+  }
+
+  .row__inv {
+    color: var(--ink-2);
+    font-variant-numeric: var(--figures);
+  }
+
+  /* The held document: a terracotta left-edge lift, not a full side-stripe card. */
+  .row--held td:first-child {
+    box-shadow: inset 3px 0 0 0 var(--terracotta);
+  }
+
+  .row--held .row__supplier {
+    padding-left: calc(var(--s3) + 3px);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s1);
+    padding: var(--s1) var(--s2);
+    font-size: var(--text-sm);
+    font-weight: var(--w-med);
+    line-height: 1.3;
+    border-radius: var(--radius);
+    white-space: nowrap;
+  }
+
+  .chip__icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex: none;
+  }
+
+  .chip--matched {
+    background: var(--sage-tint);
+    color: var(--ink);
+  }
+
+  .chip--matched .chip__icon {
+    color: var(--sage);
+  }
+
+  .chip--held {
+    background: var(--held);
+    color: var(--ink);
+    font-weight: var(--w-semi);
+  }
+
+  .chip--estimate {
+    background: var(--teal-tint);
+    color: var(--ink);
+    font-weight: var(--w-med);
+  }
+
+  .ledger__caption {
+    margin-top: var(--s3);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    line-height: var(--lead-text);
+    max-width: 60ch;
+  }
+
+  /* Figures: separated by hairline rules, read as a ledger, not identical tiles. */
+  .figures {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .figures > :global(.fig) {
+    border-top: var(--rule-w) solid var(--rule);
+  }
+
+  .figures > :global(.fig:first-child) {
+    border-top: none;
+  }
+
+  .figures__note {
+    margin-top: var(--s4);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    line-height: var(--lead-text);
+    max-width: 60ch;
+  }
+
+  /* The brief: a small panel of lines, one estimate, one excluded. */
+  .brief {
+    padding: var(--s4);
+    background: var(--panel-2);
+    border-radius: var(--radius);
+  }
+
+  .brief__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brief__line {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--s1) var(--s2);
+    padding: var(--s3) 0;
+    border-bottom: var(--rule-w) solid var(--rule);
+    color: var(--ink);
+    font-size: var(--text-base);
+    line-height: var(--lead-snug);
+  }
+
+  .brief__line:last-child {
+    border-bottom: none;
+  }
+
+  .brief__check {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex: none;
+    color: var(--sage);
+    align-self: center;
+  }
+
+  .brief__text {
+    flex: 1 1 auto;
+    font-variant-numeric: var(--figures);
+  }
+
+  .brief__line--excluded .brief__text {
+    color: var(--ink-3);
+    text-decoration: line-through;
+  }
+
+  .brief__excluded-note {
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    font-weight: var(--w-med);
+    font-style: italic;
+  }
+
+  .brief__note {
+    margin-top: var(--s4);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    line-height: var(--lead-text);
+    max-width: 60ch;
+  }
+
+  /* Mobile-first: the ledger reflows to stacked rows so it never scrolls sideways. */
+  @media (max-width: 767px) {
+    .ledger thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .ledger tbody tr {
+      display: grid;
+      grid-template-columns: minmax(7rem, auto) 1fr;
+      gap: var(--s1) var(--s3);
+      padding: var(--s3) 0;
+      border-bottom: var(--rule-w) solid var(--rule);
+    }
+
+    .ledger tbody td {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--s3);
+      padding: 0;
+      border-bottom: none;
+    }
+
+    .ledger tbody td::before {
+      content: attr(data-label);
+      color: var(--ink-3);
+      font-size: var(--text-sm);
+      font-weight: var(--w-med);
+    }
+
+    .ledger .num {
+      text-align: right;
+    }
+
+    .row__supplier {
+      grid-column: 1 / -1;
+    }
+
+    .row__supplier::before {
+      display: none;
+    }
+
+    .row--held td:first-child {
+      box-shadow: none;
+    }
+
+    .row--held {
+      box-shadow: inset 3px 0 0 0 var(--terracotta);
+      padding-left: var(--s3);
+    }
+
+    .row--held .row__supplier {
+      padding-left: 0;
+    }
+  }
+
+  /* Wider layout: figures as a 3-across row, the ledger as a tidy table. */
+  @media (min-width: 768px) {
+    .stage {
+      padding: var(--s6) var(--gutter) var(--s7);
+    }
+
+    .figures {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      column-gap: 0;
+    }
+
+    .figures > :global(.fig) {
+      border-top: none;
+      border-left: var(--rule-w) solid var(--rule);
+      padding-inline: var(--s5);
+    }
+
+    .figures > :global(.fig:first-child) {
+      border-left: none;
+      padding-left: 0;
+    }
+
+    .figures > :global(.fig:last-child) {
+      padding-right: 0;
+    }
+  }
+</style>
