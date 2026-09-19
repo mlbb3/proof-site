@@ -1,0 +1,36 @@
+/* Self-hosted Barlow (Fontsource files, latin subset, normal style, woff2 only).
+   No runtime Google Fonts request. The weights match the four the tokens use:
+   400 regular, 500 medium, 600 semibold, 700 bold. font-display: swap so text
+   paints immediately in the fallback and reflows once Barlow arrives. */
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/barlow-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/barlow-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/barlow-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/barlow-latin-700-normal.woff2') format('woff2');
+}
