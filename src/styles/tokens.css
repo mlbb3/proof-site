@@ -1,110 +1,63 @@
-/* Design tokens. Ported from .design/proof-site/DESIGN_TOKENS.css (14 Sep 2026).
-   The physical object is a well-set delivery note: black ruling on white paper,
-   one highlighter used only where something needs attention.
-   Light mode only, by rule. No dark palette exists and none should be added.
-   OKLCH throughout. Page white is chroma 0. Values ported verbatim; only the
-   plumbing-specific comments were neutralised for the Papote calling card. */
+/* Design tokens. Rewritten on Max's approved identity (18 Sep 2026):
+   faint-teal ground, the finca-tuned palette, Barlow. Light mode only, by rule;
+   no dark palette exists and none should be added. One place: swapping a value
+   here moves the whole site. Values are the locked palette from the design brief
+   (docs/superpowers/specs/2026-09-17-design-brief-living-proof.md). */
 
 :root {
   color-scheme: light;
 
-  /* Colour: paper and ink */
-  --paper:            oklch(1 0 0);            /* #ffffff. html, body and every section */
-  --well:             oklch(0.97 0 0);         /* #f5f5f5. Input fields, source-document interior */
-  --ink:              oklch(0.19 0 0);         /* #141414. Body, headings, table text. 18.5:1 on paper */
-  --ink-2:            oklch(0.42 0 0);         /* #4d4d4d. Captions, provenance, muted lines. 8.5:1 */
-  --ink-3:            oklch(0.55 0 0);         /* #717171. Placeholder text, disabled label. 4.9:1, the floor */
-  --rule:             oklch(0.78 0 0);         /* #b7b7b7. Table row rules */
-  --rule-strong:      var(--ink);              /* Header rules, section rules, record border */
-  --rule-soft:        oklch(0.90 0 0);         /* #dedede. Ruled document outline, placeholder lines */
+  /* Ground and panels */
+  --ground:      #eef9fa;              /* faint teal wash. The page. */
+  --panel:       #ffffff;              /* stage, ledger, charts sit on white panels */
+  --panel-2:     #f2ebe0;              /* warm-stone tint band, inside panels only */
 
-  /* Colour: the one highlighter. A marker, only where something needs attention. */
-  --mark:             oklch(0.94 0.18 104);    /* #fff044. Behind text needing attention. Ink on mark 15.7:1 */
-  --mark-strong:      oklch(0.90 0.20 100);    /* #fedf00. Fill of buttons and :active on the mark */
-  --ink-on-mark:      var(--ink);
+  /* Ink (grey everything that is not data) */
+  --ink:         #141414;              /* 17.2:1 on ground */
+  --ink-2:       #4d4d4d;              /* captions, provenance */
+  --ink-3:       #717171;              /* placeholder, disabled */
+  --rule:        #d7d9d9;              /* hairline rules and grid */
+  --rule-strong: var(--ink);
 
-  /* Colour: focus. Ink, not the highlighter, so focus never reads as "needs action" */
-  --focus-ring:       0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
+  /* Brand */
+  --teal:        #0a6f86;              /* button, pipeline, headings-as-colour. 5.8:1 on white */
+  --teal-tint:   #cfe6ec;             /* captured-not-verified fill */
+  --terracotta:  #c2593a;             /* warm accent, held-doc lift, series 2 */
+  --terracotta-tint: #f3dcd3;
+  --sage:        #5a8f52;              /* matched / decided STATE, always labelled */
+  --sage-tint:   #e3ece0;
 
-  /* Type: one family. Swap the first name in --font-text to change the choice; nothing else moves.
-     Figures: --font-figures is the same family with tabular-nums. Numbers, dates, IDs and
-     times only. Never a sentence. */
-  --font-text:        "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-figures:     var(--font-text);
-  --figures:          tabular-nums lining-nums;     /* font-variant-numeric on every figure cell */
+  /* Status (fixed, never a series) */
+  --held:        #fab219;              /* held for review, icon + label */
+  --critical:    #d03b3b;             /* reserved, real errors */
 
-  --weight-text:      400;
-  --weight-medium:    500;   /* table headers, status text, record sender line */
-  --weight-heading:   600;   /* headline, block headings, total row */
+  /* Chart series (validated finca order; ochre carries direct labels) */
+  --series-1: #0c789a; --series-2: #c2593a; --series-3: #4e6cb3; --series-4: #907a22;
+  --series-5: #8a4f7d; --series-6: #5a8f52; --series-7: #c9962b; --series-8: #b23a3a;
 
-  /* Type: sizes. 1.25 ratio, fluid at the top, fixed at the bottom so tables never jitter */
-  --text-xs:          0.8125rem;                                   /* 13px  captions */
-  --text-sm:          0.875rem;                                    /* 14px  table cells on mobile, footer */
-  --text-base:        1rem;                                        /* 16px  body, table cells on desktop */
-  --text-md:          1.0625rem;                                   /* 17px  decision lines */
-  --text-lg:          clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);      /* 20 to 24px  block headings */
-  --text-xl:          clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);     /* 28 to 40px  the headline */
+  /* Type */
+  --font: "Barlow", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --figures: tabular-nums lining-nums;
+  --w-reg: 400; --w-med: 500; --w-semi: 600; --w-bold: 700;
+  --text-sm: 0.875rem; --text-base: 1rem; --text-md: 1.0625rem;
+  --text-lg: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-xl: clamp(1.9rem, 1.4rem + 2vw, 3rem);
+  --lead-tight: 1.12; --lead-snug: 1.3; --lead-text: 1.5;
 
-  --leading-tight:    1.15;   /* headline */
-  --leading-snug:     1.3;    /* block headings, table cells */
-  --leading-text:     1.5;    /* body and decision lines */
+  /* Space (4px base) */
+  --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem; --s6:2rem; --s7:3rem; --s8:4rem; --s9:6rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --page-max: 72rem;
 
-  --tracking-heading: -0.01em;
-  --tracking-text:    0;
-
-  --measure:          68ch;   /* prose column, left aligned, never centred */
-
-  /* Space: 4px base. Ruled documents are dense; the scale is tight at the bottom */
-  --space-1:  0.25rem;  /*  4px */
-  --space-2:  0.5rem;   /*  8px */
-  --space-3:  0.75rem;  /* 12px */
-  --space-4:  1rem;     /* 16px */
-  --space-5:  1.5rem;   /* 24px */
-  --space-6:  2rem;     /* 32px */
-  --space-7:  3rem;     /* 48px */
-  --space-8:  4rem;     /* 64px */
-  --space-9:  6rem;     /* 96px */
-
-  --gutter:           clamp(1rem, 4vw, 2rem);    /* page side padding, 16 to 32px */
-  --block-gap:        var(--space-8);            /* between evidence blocks */
-  --section-gap:      var(--space-9);            /* between major sections */
-
-  /* Layout */
-  --page-max:         72rem;    /* 1152px */
-  --column-brief:     26rem;    /* sticky left column above 1100px */
-  --bp-wide:          1100px;   /* two-column layout starts here. Use by value in media queries */
-  --bp-mid:           700px;
-
-  /* Shape. Paper has no radius. */
-  --radius:           0;
-  --radius-mark:      1px;      /* the highlighter's ends, so it reads as a marker not a box */
-  --rule-w:           1px;
-  --shadow:           none;
-
-  /* Motion. Only the one meaningful transition uses these. Nothing else animates. */
-  --dur-fast:         180ms;
-  --dur-move:         220ms;    /* source-to-field transform, mark widen */
-  --dur-reveal:       250ms;    /* disclosure, pulse */
-  --dur-max:          300ms;    /* no single movement exceeds this */
-  --ease-out:         cubic-bezier(0.16, 1, 0.3, 1);   /* expo.out */
-  --move-distance:    8px;      /* entrance offset; ceiling is 12px */
-
-  /* Components */
-  --table-cell-y:     var(--space-2);
-  --table-cell-x:     var(--space-2);
-  --button-y:         var(--space-3);
-  --button-x:         var(--space-5);
-  --mark-pad-x:       0.15em;
-  --input-border:     var(--rule-w) solid var(--ink);
+  /* Shape and motion */
+  --radius: 4px;                        /* panels get a small radius; the page is not a hard grid now */
+  --rule-w: 1px;
+  --focus-ring: 0 0 0 2px var(--ground), 0 0 0 4px var(--teal);
+  --dur-fast: 180ms; --dur-move: 240ms; --dur-reveal: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);      /* expo.out */
+  --ease-cam: cubic-bezier(0.37, 0, 0.63, 1);     /* sine.inOut, camera/travel */
 }
 
-/* Reduced motion collapses every duration. Any transition becomes an instant state change. */
 @media (prefers-reduced-motion: reduce) {
-  :root {
-    --dur-fast: 0ms;
-    --dur-move: 0ms;
-    --dur-reveal: 0ms;
-    --dur-max: 0ms;
-    --move-distance: 0px;
-  }
+  :root { --dur-fast:0ms; --dur-move:0ms; --dur-reveal:0ms; }
 }

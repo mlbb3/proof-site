@@ -1,5 +1,6 @@
-/* Base layer. Resets, light-mode enforcement, and prose defaults.
-   Every section sets its own background too (hard rule); this sets the ground. */
+/* Base layer. Resets, the faint-teal ground on html and body, a white panel
+   surface helper, Barlow applied site-wide, tabular figures, and the base for
+   reduced motion (durations collapse in tokens.css). Light mode only, by rule. */
 
 *,
 *::before,
@@ -9,7 +10,7 @@
 
 html {
   color-scheme: light;
-  background: var(--paper);
+  background: var(--ground);
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -17,31 +18,31 @@ html {
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--ground);
   color: var(--ink);
-  font-family: var(--font-text);
+  font-family: var(--font);
   font-size: var(--text-base);
-  line-height: var(--leading-text);
+  line-height: var(--lead-text);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Every section carries its own background, by rule. */
-section {
-  background: var(--paper);
+/* White panels sit on the ground: layering and depth with no shadow. */
+.panel {
+  background: var(--panel);
+  border-radius: var(--radius);
 }
 
 h1,
 h2,
 h3 {
-  font-weight: var(--weight-heading);
-  line-height: var(--leading-snug);
-  letter-spacing: var(--tracking-heading);
+  font-weight: var(--w-semi);
+  line-height: var(--lead-snug);
+  text-wrap: balance;
   margin: 0;
 }
 
 p {
   margin: 0;
-  max-width: var(--measure);
 }
 
 a {
@@ -52,20 +53,11 @@ a {
 .figure,
 time,
 [data-figure] {
-  font-family: var(--font-figures);
   font-variant-numeric: var(--figures);
 }
 
-/* Focus is ink, never the highlighter. */
+/* Focus is an ink-backed teal ring, never a highlighter. */
 :focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
-}
-
-/* The one highlighter, as a marker behind text. */
-.mark {
-  background: var(--mark);
-  padding-inline: var(--mark-pad-x);
-  border-radius: var(--radius-mark);
-  color: var(--ink-on-mark);
 }
