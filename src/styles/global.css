@@ -1,0 +1,63 @@
+/* Base layer. Resets, the faint-teal ground on html and body, a white panel
+   surface helper, Barlow applied site-wide, tabular figures, and the base for
+   reduced motion (durations collapse in tokens.css). Light mode only, by rule. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  background: var(--ground);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--text-base);
+  line-height: var(--lead-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* White panels sit on the ground: layering and depth with no shadow. */
+.panel {
+  background: var(--panel);
+  border-radius: var(--radius);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--w-semi);
+  line-height: var(--lead-snug);
+  text-wrap: balance;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+/* Figures are tabular, prose never. */
+.figure,
+time,
+[data-figure] {
+  font-variant-numeric: var(--figures);
+}
+
+/* Focus is an ink-backed teal ring, never a highlighter. */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}

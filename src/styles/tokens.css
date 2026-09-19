@@ -1,0 +1,63 @@
+/* Design tokens. Rewritten on Max's approved identity (18 Sep 2026):
+   faint-teal ground, the finca-tuned palette, Barlow. Light mode only, by rule;
+   no dark palette exists and none should be added. One place: swapping a value
+   here moves the whole site. Values are the locked palette from the design brief
+   (docs/superpowers/specs/2026-09-17-design-brief-living-proof.md). */
+
+:root {
+  color-scheme: light;
+
+  /* Ground and panels */
+  --ground:      #eef9fa;              /* faint teal wash. The page. */
+  --panel:       #ffffff;              /* stage, ledger, charts sit on white panels */
+  --panel-2:     #f2ebe0;              /* warm-stone tint band, inside panels only */
+
+  /* Ink (grey everything that is not data) */
+  --ink:         #141414;              /* 17.2:1 on ground */
+  --ink-2:       #4d4d4d;              /* captions, provenance */
+  --ink-3:       #717171;              /* placeholder, disabled */
+  --rule:        #d7d9d9;              /* hairline rules and grid */
+  --rule-strong: var(--ink);
+
+  /* Brand */
+  --teal:        #0a6f86;              /* button, pipeline, headings-as-colour. 5.8:1 on white */
+  --teal-tint:   #cfe6ec;             /* captured-not-verified fill */
+  --terracotta:  #c2593a;             /* warm accent, held-doc lift, series 2 */
+  --terracotta-tint: #f3dcd3;
+  --sage:        #5a8f52;              /* matched / decided STATE, always labelled */
+  --sage-tint:   #e3ece0;
+
+  /* Status (fixed, never a series) */
+  --held:        #fab219;              /* held for review, icon + label */
+  --critical:    #d03b3b;             /* reserved, real errors */
+
+  /* Chart series (validated finca order; ochre carries direct labels) */
+  --series-1: #0c789a; --series-2: #c2593a; --series-3: #4e6cb3; --series-4: #907a22;
+  --series-5: #8a4f7d; --series-6: #5a8f52; --series-7: #c9962b; --series-8: #b23a3a;
+
+  /* Type */
+  --font: "Barlow", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --figures: tabular-nums lining-nums;
+  --w-reg: 400; --w-med: 500; --w-semi: 600; --w-bold: 700;
+  --text-sm: 0.875rem; --text-base: 1rem; --text-md: 1.0625rem;
+  --text-lg: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-xl: clamp(1.9rem, 1.4rem + 2vw, 3rem);
+  --lead-tight: 1.12; --lead-snug: 1.3; --lead-text: 1.5;
+
+  /* Space (4px base) */
+  --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem; --s6:2rem; --s7:3rem; --s8:4rem; --s9:6rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --page-max: 72rem;
+
+  /* Shape and motion */
+  --radius: 4px;                        /* panels get a small radius; the page is not a hard grid now */
+  --rule-w: 1px;
+  --focus-ring: 0 0 0 2px var(--ground), 0 0 0 4px var(--teal);
+  --dur-fast: 180ms; --dur-move: 240ms; --dur-reveal: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);      /* expo.out */
+  --ease-cam: cubic-bezier(0.37, 0, 0.63, 1);     /* sine.inOut, camera/travel */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast:0ms; --dur-move:0ms; --dur-reveal:0ms; }
+}
