@@ -5,6 +5,8 @@
 // optional ?to= on the link, never a route, so nothing is baked in.
 import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
+import MorningBrief from '../../components/MorningBrief.astro';
+import EvidenceInvoices from '../../components/EvidenceInvoices.astro';
 import ProofSection from '../../components/ProofSection.astro';
 import Outcomes from '../../components/Outcomes.astro';
 import CloseSection from '../../components/CloseSection.astro';
@@ -26,6 +28,8 @@ const { segment } = Astro.props;
 >
   <main>
     <Hero hero={segment.hero} />
+    <MorningBrief />
+    <EvidenceInvoices />
     <ProofSection />
     <Outcomes />
     <CloseSection />

@@ -30,6 +30,7 @@
   /* Status (fixed, never a series) */
   --held:        #fab219;              /* held for review, icon + label */
   --critical:    #d03b3b;             /* reserved, real errors */
+  --mark:        #ffe08a;              /* the one highlighter, behind text needing attention */
 
   /* Chart series (validated finca order; ochre carries direct labels) */
   --series-1: #0c789a; --series-2: #c2593a; --series-3: #4e6cb3; --series-4: #907a22;

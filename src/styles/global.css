@@ -10,7 +10,7 @@
 
 html {
   color-scheme: light;
-  background: var(--ground);
+  background: var(--panel);
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -18,7 +18,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--ground);
+  background: var(--panel);
   color: var(--ink);
   font-family: var(--font);
   font-size: var(--text-base);
