@@ -1,34 +1,27 @@
 ---
+// The reassurance page. Sent after a call, opened on a phone. Its job is not to
+// wow a stranger, it is to reassure a warm lead that Max will actually deliver
+// and that they stay in control. Trades-first, plain outcomes, real live proof,
+// one small low-risk next step.
+//
+// DRAFT copy in src/data/site.ts, for Max's sign-off and a humanizer pass.
+// Personalisation (a "?to=Name" line, a per-trade word, a short video) is a
+// deliberate fast-follow, not built here.
 import Base from '../layouts/Base.astro';
-import Identity from '../components/Identity.astro';
-import Stage from '../components/Stage.astro';
+import Hero from '../components/Hero.astro';
+import ProofSection from '../components/ProofSection.astro';
+import Outcomes from '../components/Outcomes.astro';
+import CloseSection from '../components/CloseSection.astro';
 ---
-<Base title="Max Brown, back-office automation" description="Working example. Copy is written last.">
+
+<Base
+  title="Max Brown, back-office systems for small businesses"
+  description="I catch every job, chase what is owed, and send you one plain summary each morning. You stay in control. I keep it running."
+>
   <main>
-    <Identity />
-    <Stage />
-    <nav class="spoke-link" aria-label="Case study">
-      <a href="/papote">See the full Papote diagnosis</a>
-    </nav>
+    <Hero />
+    <ProofSection />
+    <Outcomes />
+    <CloseSection />
   </main>
-
-  <style>
-    .spoke-link {
-      max-width: var(--page-max);
-      margin-inline: auto;
-      padding: 0 var(--gutter) var(--s8);
-    }
-
-    .spoke-link a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 44px;
-      color: var(--teal);
-      font-weight: var(--w-semi);
-      font-size: var(--text-md);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-thickness: 1px;
-    }
-  </style>
 </Base>

@@ -1,0 +1,84 @@
+---
+import { IDENTITY, CLOSE } from '../data/site';
+
+const waHref = `https://wa.me/${IDENTITY.whatsappNumber}?text=GO`;
+const telHref = `tel:+${IDENTITY.whatsappNumber}`;
+---
+
+<section class="close" aria-labelledby="close-heading">
+  <div class="close-inner">
+    <div class="start panel">
+      <h2 id="close-heading">{CLOSE.heading}</h2>
+      <p class="body">{CLOSE.body}</p>
+      <a class="btn" href={waHref}>{CLOSE.ctaButton}</a>
+      <p class="phone"><a href={telHref}>{CLOSE.phoneLine}</a></p>
+    </div>
+
+    <footer class="foot">
+      <p>{CLOSE.footer}</p>
+    </footer>
+  </div>
+</section>
+
+<style>
+  .close {
+    background: var(--ground);
+    padding: var(--s6) 0 var(--s8);
+  }
+  .close-inner {
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .start {
+    padding: var(--s6);
+    border: var(--rule-w) solid var(--rule);
+  }
+  h2 {
+    font-size: var(--text-lg);
+    font-weight: var(--w-bold);
+    margin: 0 0 var(--s3);
+  }
+  .body {
+    color: var(--ink-2);
+    line-height: var(--lead-text);
+    max-width: 48ch;
+    margin: 0 0 var(--s5);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 var(--s6);
+    background: var(--teal);
+    color: #fff;
+    font-weight: var(--w-semi);
+    font-size: var(--text-md);
+    text-decoration: none;
+    border-radius: 8px;
+  }
+  .phone {
+    margin: var(--s4) 0 0;
+    font-size: var(--text-md);
+  }
+  .phone a {
+    color: var(--teal);
+    font-weight: var(--w-medium);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .foot {
+    margin-top: var(--s6);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    line-height: var(--lead-text);
+    max-width: 52ch;
+  }
+  @media (max-width: 520px) {
+    .btn {
+      display: flex;
+      width: 100%;
+    }
+  }
+</style>
