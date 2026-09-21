@@ -349,7 +349,7 @@ const exact = (p: number) => formatMoneyExact(p, 'GBP');
   .pdf-doc {
     display: grid;
     gap: var(--s2);
-    max-width: 17rem;
+    max-width: 14rem;
     padding: var(--s4);
     background: var(--panel);
     border: var(--rule-w) solid var(--rule);
@@ -385,8 +385,13 @@ const exact = (p: number) => formatMoneyExact(p, 'GBP');
   }
   @media (min-width: 640px) {
     .two {
-      grid-template-columns: minmax(0, 17rem) 1fr;
+      grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
       align-items: start;
+    }
+    /* Beside the outline the register is narrow: let headers wrap rather
+       than clip, and keep only the figures on one line. */
+    .two :global(.ruled th) {
+      white-space: normal;
     }
   }
 
