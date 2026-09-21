@@ -24,7 +24,7 @@ const title = trade.slug === 'default'
   description="Enquiries answered, invoices filed, hours checked, one plain message every morning. Built and run by Max Brown for small businesses."
 >
   <main data-trade={trade.slug}>
-    <div class="col">
+    <div class="col col-hero">
       <Hero trade={trade} />
     </div>
     <div class="spine">
@@ -61,6 +61,11 @@ const title = trade.slug === 'default'
     .col {
       max-width: var(--page-max);
     }
+    /* The hero shares the brief's column so the empty right of the fold reads
+       as margin, not absence. */
+    .col-hero > :global(.hero) {
+      max-width: 27rem;
+    }
     .spine {
       max-width: var(--page-max);
       display: grid;
@@ -68,6 +73,8 @@ const title = trade.slug === 'default'
       gap: var(--s8);
       align-items: start;
     }
+  }
+  @media (min-width: 1100px) and (min-height: 760px) {
     .spine-brief {
       position: sticky;
       top: var(--s4);

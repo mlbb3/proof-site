@@ -25,11 +25,12 @@ export const HERO = {
   headline: 'Your admin,',
   emphasis: 'done overnight.',
   opening:
-    "Most of a small business owner's week is admin. Replying to enquiries, chasing invoices, checking the rota, pulling the numbers together. I set that up to run on its own.",
+    "Most of a small business owner's week is admin. Replying to enquiries, chasing invoices, checking the rota, pulling the numbers together. I set that up to run overnight. I keep it running, and you sign off anything that goes out.",
   /** After a trade page's own first sentence. */
   openingRest:
-    'Replying to enquiries, chasing invoices, checking the rota, pulling the numbers together. I set that up to run on its own.',
-  button: 'Message me on WhatsApp',
+    'Replying to enquiries, chasing invoices, checking the rota, pulling the numbers together. I set that up to run overnight. I keep it running, and you sign off anything that goes out.',
+  button: 'WhatsApp me',
+  ring: 'Or ring me:',
 };
 
 export const BRIEF_UI = {
@@ -40,8 +41,9 @@ export const BRIEF_UI = {
   run: 'Run last night',
   runAgain: 'Run it again',
   skip: 'Skip',
+  runHint: 'Replays the night above. About eight seconds.',
   under: 'Tap any marked line to see what\'s underneath it.',
-  mock: 'A simplified mock-up of a real build. The firm and the figures are made up. The live versions run the actual business; two of those are further down, and they\'re real.',
+  mock: 'Made up, this one: the firm, the numbers, all of it. Two real ones are running now, further down the page.',
 };
 
 export const CAPTIONS = {
@@ -73,12 +75,12 @@ export const LIVE = {
 };
 
 export const BODY = [
-  "I set that up to run on its own. Enquiries get a reply drafted in your voice, waiting for your sign-off. Invoices get filed the day they land. Bookings, staff hours and supplier costs get logged without anyone typing them in. Every morning you get one message: what happened yesterday, what needs you today.",
+  "I set that up to run overnight, and I keep it running. Enquiries get a reply drafted in your voice, waiting for your sign-off. Invoices get filed the day they land. Bookings, staff hours and supplier costs get logged without anyone typing them in. Every morning you get one message: what happened yesterday, what needs you today.",
   "I've built this for a café in Amsterdam and a creator running her businesses from her phone, and I'm building it now for a house-clearance firm in London.",
 ];
 
 export const PROOF = {
-  heading: 'Two running now, one being built',
+  heading: 'Two running now, a third on the way',
   entries: [
     {
       status: 'Running',
@@ -94,7 +96,7 @@ export const PROOF = {
       body: 'Leads, payments from two platforms and the content pipeline on one dashboard. A morning brief that only tells her what changed.',
     },
     {
-      status: 'Being built',
+      status: 'Building',
       title: 'House clearance, London',
       body: 'Every enquiry gets a reply drafted in the owner\'s voice, ready to send. Jobs tracked in one place with a daily sweep.',
     },
@@ -102,8 +104,17 @@ export const PROOF = {
 };
 
 export const HOW = {
-  heading: 'How it starts',
-  body: "It starts with a call, where you tell me where the hours go and I ask a lot of questions. Then I write up what I'd build, in what order, and what each part costs, and you pick where to start. The first build lands within days. Nothing goes to a customer without you seeing it first.",
+  heading: 'What happens next',
+  body: "We've had the call. Next I write up what I'd build, in what order, and what each part costs. You pick where to start. The first build lands within days. Nothing goes to a customer without you seeing it first.",
+};
+
+export const STRAIGHT = {
+  heading: 'Straight answers',
+  lines: [
+    "If a draft's wrong, you edit it or bin it. I fix the pattern so it doesn't happen twice.",
+    'It runs on your accounts, not mine. If we ever stop, everything stays yours.',
+    "It runs whether I'm at my desk or not. Anything that needs a human waits for you, not for me.",
+  ],
 };
 
 export const REPLY = {

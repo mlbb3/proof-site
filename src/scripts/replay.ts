@@ -28,8 +28,9 @@ function countUp(tl: gsap.core.Timeline, el: HTMLElement, at: gsap.Position, dur
   tl.to(o, { v: target, duration: dur, ease: 'power2.out', onUpdate: () => { el.textContent = fmt(el, o.v); } }, at);
 }
 
+let yieldScroll = () => false;
 function scrollTo(el: Element | null) {
-  if (!el) return;
+  if (!el || yieldScroll()) return;
   el.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'start' });
 }
 
@@ -60,12 +61,19 @@ export function mountReplay() {
   };
   const cap = (text: string) => () => { cap$.textContent = text; };
 
+  // Lines are written in, left to right, one after another. A wipe, not a fade:
+  // it reads as text arriving, and never types character by character.
   const composeBrief = (tl: gsap.core.Timeline, at: gsap.Position) => {
-    tl.set(lines, { autoAlpha: 0, y: 6 }, at);
+    tl.set(lines, { autoAlpha: 1, clipPath: 'inset(0 100% 0 0)' }, at);
     tl.set(today, { autoAlpha: 0 }, at);
-    tl.to(lines, { autoAlpha: 1, y: 0, duration: 0.26, ease: 'expo.out', stagger: 0.24 }, at);
-    tl.to(today, { autoAlpha: 1, duration: 0.24, ease: 'expo.out' }, '>-0.05');
+    tl.to(lines, { clipPath: 'inset(0 0% 0 0)', duration: 0.42, ease: 'power2.out', stagger: 0.26 }, at);
+    tl.to(today, { autoAlpha: 1, duration: 0.24, ease: 'expo.out' }, '>-0.1');
   };
+
+  // If the reader moves the page themselves during a run, the replay stops
+  // steering the scroll for the rest of that run.
+  let userMoved = false;
+  const noteMove = () => { userMoved = true; };
 
   // First view: the brief composes itself once, quietly. No pipeline, no scroll.
   let composed = false;
@@ -80,15 +88,19 @@ export function mountReplay() {
   io.observe(brief);
 
   let tl: gsap.core.Timeline | null = null;
+  yieldScroll = () => userMoved;
+  for (const ev of ['wheel', 'touchstart', 'keydown'] as const) {
+    window.addEventListener(ev, () => { if (tl && tl.isActive()) noteMove(); }, { passive: true });
+  }
 
   function build(): gsap.core.Timeline {
     const t = gsap.timeline({ paused: true, defaults: { ease: 'expo.out', duration: 0.24 } });
 
     // Before the tap: brief empties, blocks empty, caption strip appears.
     t.addLabel('start', 0);
-    t.set(lines, { autoAlpha: 0, y: 6 }, 'start');
+    t.set(lines, { autoAlpha: 0 }, 'start');
     t.set(today, { autoAlpha: 0 }, 'start');
-    t.call(() => { reading?.classList.add('on'); skip$.hidden = false; }, undefined, 'start');
+    t.call(() => { reading?.classList.add('on'); skip$.hidden = false; userMoved = false; }, undefined, 'start');
     for (const b of Object.values(blocks)) {
       if (!b) continue;
       t.set($$('[data-row]', b), { autoAlpha: 0, y: 8 }, 'start');
@@ -172,7 +184,7 @@ export function mountReplay() {
     t.call(cap('Writing the brief'), undefined, 's6');
     t.call(() => { scrollTo(brief); reading?.classList.remove('on'); }, undefined, 's6');
     composeBrief(t, 's6+=0.1');
-    t.call(() => { cap$.textContent = ''; skip$.hidden = true; }, undefined, '>');
+    t.call(() => { cap$.textContent = cap$.dataset.hint ?? ''; skip$.hidden = true; }, undefined, '>');
 
     t.eventCallback('onComplete', () => {
       ($('#run-label') as HTMLElement).textContent = run$.dataset.again ?? 'Run it again';
@@ -184,7 +196,7 @@ export function mountReplay() {
   function finish() {
     if (!tl) return;
     tl.progress(1);
-    cap$.textContent = '';
+    cap$.textContent = cap$.dataset.hint ?? '';
     skip$.hidden = true;
     reading?.classList.remove('on');
     scrollTo(brief);

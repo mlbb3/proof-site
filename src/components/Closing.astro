@@ -1,7 +1,7 @@
 ---
 // After the evidence: the two body paragraphs, three real proof entries as a
 // ruled list, how it starts as prose, the reply button, the footer.
-import { BODY, PROOF, HOW, REPLY, FOOTER, WA_HREF, TEL_HREF, IDENTITY } from '../data/site';
+import { BODY, PROOF, HOW, STRAIGHT, REPLY, FOOTER, WA_HREF, TEL_HREF, IDENTITY } from '../data/site';
 ---
 
 <section class="closing">
@@ -28,6 +28,11 @@ import { BODY, PROOF, HOW, REPLY, FOOTER, WA_HREF, TEL_HREF, IDENTITY } from '..
   <section class="how measure" aria-labelledby="how-h">
     <h2 id="how-h">{HOW.heading}</h2>
     <p>{HOW.body}</p>
+  </section>
+
+  <section class="straight measure" aria-labelledby="straight-h">
+    <h2 id="straight-h">{STRAIGHT.heading}</h2>
+    <ul>{STRAIGHT.lines.map((l) => <li>{l}</li>)}</ul>
   </section>
 
   <div class="reply">
@@ -124,6 +129,19 @@ import { BODY, PROOF, HOW, REPLY, FOOTER, WA_HREF, TEL_HREF, IDENTITY } from '..
   .how p {
     line-height: var(--lead-text);
     margin: 0;
+  }
+  .straight ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .straight li {
+    padding: var(--s3) 0;
+    border-top: var(--rule-w) solid var(--rule);
+    line-height: var(--lead-text);
+  }
+  .straight li:last-child {
+    border-bottom: var(--rule-w) solid var(--rule);
   }
   .reply {
     margin-top: var(--s7);

@@ -62,7 +62,7 @@ const lines = [
       <span id="run-label">{BRIEF_UI.run}</span>
     </button>
     <button class="textlink" type="button" id="skip" hidden>{BRIEF_UI.skip}</button>
-    <p class="caption" id="caption" aria-live="polite"></p>
+    <p class="caption" id="caption" aria-live="polite" data-hint={BRIEF_UI.runHint}>{BRIEF_UI.runHint}</p>
   </div>
 
   <p class="under">{BRIEF_UI.under}</p>
@@ -83,12 +83,13 @@ const lines = [
     color: var(--ink-2);
     margin: 0 0 var(--s4);
   }
-  /* The message record sits on a faint-teal mat: the one soft-colour moment. */
+  /* The message record is paper, not a card: a heavy rule on top, a hairline
+     under, nothing at the sides, no tint. */
   .stage {
-    background: var(--ground);
-    border: var(--rule-w) solid var(--rule);
-    border-radius: var(--radius);
-    padding: var(--s5);
+    background: var(--panel);
+    border-top: 3px solid var(--ink);
+    border-bottom: var(--rule-w) solid var(--rule);
+    padding: var(--s4) 0 var(--s4);
   }
   .msg-head {
     display: flex;
@@ -117,8 +118,6 @@ const lines = [
   .today h3 {
     font-size: var(--text-sm);
     font-weight: var(--w-semi);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
     color: var(--ink-2);
     margin: var(--s4) 0 var(--s2);
   }
@@ -149,7 +148,7 @@ const lines = [
     color: var(--ink);
   }
   .line-text {
-    font-size: var(--text-md);
+    font-size: var(--text-base);
     line-height: var(--lead-snug);
   }
   .line .mark {
