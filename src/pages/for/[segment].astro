@@ -1,0 +1,33 @@
+---
+// One durable page per trade: /for/roofing, /for/house-clearance, and so on.
+// The body is shared; only the hero speaks the trade's language. Add a trade by
+// adding an entry to SEGMENTS in src/data/site.ts. A prospect's name is an
+// optional ?to= on the link, never a route, so nothing is baked in.
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import ProofSection from '../../components/ProofSection.astro';
+import Outcomes from '../../components/Outcomes.astro';
+import CloseSection from '../../components/CloseSection.astro';
+import { TRADE_SEGMENTS } from '../../data/site';
+
+export function getStaticPaths() {
+  return TRADE_SEGMENTS.map((segment) => ({
+    params: { segment: segment.slug },
+    props: { segment },
+  }));
+}
+
+const { segment } = Astro.props;
+---
+
+<Base
+  title={`Max Brown, back office for ${segment.label.toLowerCase()}`}
+  description="I catch every enquiry, chase what you're owed, and send you a plain summary each morning. You stay in control. I keep it running."
+>
+  <main>
+    <Hero hero={segment.hero} />
+    <ProofSection />
+    <Outcomes />
+    <CloseSection />
+  </main>
+</Base>

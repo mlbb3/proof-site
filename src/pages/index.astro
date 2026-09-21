@@ -12,14 +12,17 @@ import Hero from '../components/Hero.astro';
 import ProofSection from '../components/ProofSection.astro';
 import Outcomes from '../components/Outcomes.astro';
 import CloseSection from '../components/CloseSection.astro';
+import { SEGMENTS } from '../data/site';
+
+const { hero } = SEGMENTS.default;
 ---
 
 <Base
   title="Max Brown, back-office systems for small businesses"
-  description="I catch every job, chase what is owed, and send you one plain summary each morning. You stay in control. I keep it running."
+  description="I catch every enquiry, chase what you're owed, and send you a plain summary each morning. You stay in control. I keep it running."
 >
   <main>
-    <Hero />
+    <Hero hero={hero} />
     <ProofSection />
     <Outcomes />
     <CloseSection />
