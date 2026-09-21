@@ -1,75 +1,56 @@
 ---
-import { IDENTITY, type Hero } from '../data/site';
+// Identity, the personal line (only with ?to=), the headline, the opening and
+// the button. Plain type, no eyebrow above the headline.
+import { IDENTITY, HERO, WA_HREF } from '../data/site';
+import type { Trade } from '../data/trades';
 
 interface Props {
-  hero: Hero;
+  trade: Trade;
 }
-const { hero } = Astro.props;
-
-const waHref = `https://wa.me/${IDENTITY.whatsappNumber}?text=GO`;
+const { trade } = Astro.props;
+// A trade page leads with its own sentence and drops the generic one.
+const opening = trade.opener ? `${trade.opener} ${HERO.openingRest}` : HERO.opening;
 ---
 
 <header class="hero">
-  <div class="hero-inner">
-    <div class="who">
-      <span class="mono" aria-hidden="true">{IDENTITY.monogram}</span>
-      <span class="who-text">
-        <span class="who-name">{IDENTITY.name}</span>
-        <span class="who-role">{IDENTITY.role}</span>
-      </span>
-    </div>
-
-    {/* Static kicker for trade pages. A ?to=Name on the link replaces this
-        with the prospect's name at view time (see the inline script). */}
-    <p class="kicker" id="hero-kicker" hidden={!hero.kicker}>{hero.kicker}</p>
-
-    <h1>
-      {hero.headline}{hero.headlineEmphasis && <> <span class="accent">{hero.headlineEmphasis}</span></>}
-    </h1>
-
-    <p class="sub">{hero.sub}</p>
-
-    <div class="cta">
-      <a class="btn" href={waHref}>
-        <svg class="btn-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-          <path
-            fill="currentColor"
-            d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.6.8 2 .9 2.1.1.1.1.3 0 .5-.1.2-.2.3-.3.5l-.4.4c-.2.2-.3.3-.1.6.2.3.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.3.1 1.7.8 2 .9.3.2.5.2.5.3.1.2.1.6-.1 1.2Z"
-          ></path>
-        </svg>
-        {hero.ctaButton}
-      </a>
-      <p class="cta-line">{hero.ctaLine}</p>
-    </div>
+  <div class="who">
+    <span class="mono" aria-hidden="true">{IDENTITY.monogram}</span>
+    <span class="who-text">
+      <span class="who-name">{IDENTITY.name}</span>
+      <span class="who-role">{IDENTITY.role}</span>
+    </span>
   </div>
+
+  <p class="personal" id="personal-line" hidden></p>
+  {trade.kicker && <p class="kicker">{trade.kicker}</p>}
+
+  <h1>{HERO.headline} <span class="accent">{HERO.emphasis}</span></h1>
+  <p class="opening measure">{opening}</p>
+
+  <a class="btn" href={WA_HREF}>
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.6.8 2 .9 2.1.1.1.1.3 0 .5-.1.2-.2.3-.3.5l-.4.4c-.2.2-.3.3-.1.6.2.3.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.3.1 1.7.8 2 .9.3.2.5.2.5.3.1.2.1.6-.1 1.2Z"></path></svg>
+    {HERO.button}
+  </a>
 </header>
 
-<script is:inline>
-  // Optional personalisation: /for/roofing?to=Ellis%20Bros shows the prospect's
-  // name at the top. textContent only, so the name can never inject markup.
-  (function () {
-    try {
-      var raw = new URLSearchParams(window.location.search).get('to');
-      if (!raw) return;
-      var name = raw.trim().slice(0, 40);
-      if (!name) return;
-      var el = document.getElementById('hero-kicker');
-      if (!el) return;
-      el.textContent = 'Put together for ' + name;
+<script>
+  // ?to=Name puts one line above the headline. textContent only, so a name can
+  // never inject markup. Capped, trimmed, and ignored if empty.
+  import { PERSONAL_LINE } from '../data/site';
+  try {
+    const raw = new URLSearchParams(location.search).get('to');
+    const name = raw ? raw.trim().slice(0, 40) : '';
+    const el = document.getElementById('personal-line');
+    if (name && el) {
+      el.textContent = PERSONAL_LINE(name);
       el.hidden = false;
-    } catch (e) {}
-  })();
+    }
+  } catch {}
 </script>
 
 <style>
   .hero {
-    background: var(--panel);
-    padding: var(--s7) 0 var(--s5);
-  }
-  .hero-inner {
-    max-width: 46rem;
-    margin-inline: auto;
-    padding-inline: var(--gutter);
+    padding: var(--s6) 0 var(--s5);
   }
   .who {
     display: flex;
@@ -86,7 +67,6 @@ const waHref = `https://wa.me/${IDENTITY.whatsappNumber}?text=GO`;
     background: var(--teal);
     color: #fff;
     font-weight: var(--w-bold);
-    font-size: var(--text-md);
     letter-spacing: 0.02em;
     flex: 0 0 auto;
   }
@@ -97,19 +77,23 @@ const waHref = `https://wa.me/${IDENTITY.whatsappNumber}?text=GO`;
   }
   .who-name {
     font-weight: var(--w-bold);
-    font-size: var(--text-md);
   }
   .who-role {
     color: var(--ink-2);
     font-size: var(--text-sm);
   }
-  .kicker {
-    font-size: var(--text-xs);
-    font-weight: var(--w-semi);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--teal);
+  .personal {
+    font-size: var(--text-md);
+    font-weight: var(--w-medium);
     margin: 0 0 var(--s3);
+  }
+  .personal[hidden] {
+    display: none;
+  }
+  .kicker {
+    color: var(--teal);
+    font-weight: var(--w-semi);
+    margin: 0 0 var(--s2);
   }
   h1 {
     font-size: var(--text-xl);
@@ -121,38 +105,11 @@ const waHref = `https://wa.me/${IDENTITY.whatsappNumber}?text=GO`;
   .accent {
     color: var(--teal);
   }
-  .sub {
+  .opening {
     font-size: var(--text-md);
     color: var(--ink-2);
     line-height: var(--lead-text);
-    max-width: 40ch;
-    margin: 0 0 var(--s6);
-  }
-  .cta {
-    margin-top: var(--s2);
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--s2);
-    min-height: 52px;
-    padding: 0 var(--s6);
-    background: var(--teal);
-    color: #fff;
-    font-weight: var(--w-semi);
-    font-size: var(--text-md);
-    text-decoration: none;
-    border-radius: 8px;
-  }
-  .btn-ico {
-    flex: 0 0 auto;
-  }
-  .cta-line {
-    font-size: var(--text-sm);
-    color: var(--ink-2);
-    margin: var(--s3) 0 0;
-    max-width: 42ch;
+    margin: 0 0 var(--s5);
   }
   @media (max-width: 520px) {
     .btn {

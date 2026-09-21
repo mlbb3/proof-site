@@ -19,3 +19,13 @@ export function formatMoney(minorUnits: number, currency: Currency): string {
   const major = Math.round(minorUnits / 100);
   return SYMBOL[currency] + major.toLocaleString('en-GB');
 }
+
+/** Format integer minor units with pence, for invoice rows: 862.40 pence-exact. */
+export function formatMoneyExact(minorUnits: number, currency: Currency): string {
+  if (!Number.isInteger(minorUnits)) {
+    throw new Error(`formatMoneyExact expects integer minor units, got ${minorUnits}`);
+  }
+  const major = Math.floor(minorUnits / 100);
+  const minor = minorUnits % 100;
+  return SYMBOL[currency] + major.toLocaleString('en-GB') + '.' + String(minor).padStart(2, '0');
+}

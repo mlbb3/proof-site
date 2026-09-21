@@ -1,0 +1,155 @@
+---
+// After the evidence: the two body paragraphs, three real proof entries as a
+// ruled list, how it starts as prose, the reply button, the footer.
+import { BODY, PROOF, HOW, REPLY, FOOTER, WA_HREF, TEL_HREF, IDENTITY } from '../data/site';
+---
+
+<section class="closing">
+  <div class="body measure">
+    {BODY.map((p) => <p>{p}</p>)}
+  </div>
+
+  <section class="proof" aria-labelledby="proof-h">
+    <h2 id="proof-h">{PROOF.heading}</h2>
+    <ul class="entries">
+      {PROOF.entries.map((e) => (
+        <li>
+          <p class="entry-head">
+            <span class={`status ${e.status === 'Running' ? 'on' : 'soon'}`}>{e.status}</span>
+            <span class="entry-title">{e.title}</span>
+          </p>
+          <p class="entry-body">{e.body}</p>
+          {e.live && <p class="entry-live">{e.live}</p>}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="how measure" aria-labelledby="how-h">
+    <h2 id="how-h">{HOW.heading}</h2>
+    <p>{HOW.body}</p>
+  </section>
+
+  <div class="reply">
+    <a class="btn" href={WA_HREF}>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.6.8 2 .9 2.1.1.1.1.3 0 .5-.1.2-.2.3-.3.5l-.4.4c-.2.2-.3.3-.1.6.2.3.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.3.1 1.7.8 2 .9.3.2.5.2.5.3.1.2.1.6-.1 1.2Z"></path></svg>
+      {REPLY.button}
+    </a>
+    <p class="reply-under">{REPLY.under} <a href={TEL_HREF}>{IDENTITY.phoneDisplay}</a></p>
+  </div>
+
+  <footer class="foot">
+    <p>{FOOTER}</p>
+  </footer>
+</section>
+
+<style>
+  .closing {
+    padding: var(--s6) 0 var(--s8);
+    border-top: 2px solid var(--rule-strong);
+  }
+  .body p {
+    line-height: var(--lead-text);
+    margin: 0 0 var(--s4);
+  }
+  h2 {
+    font-size: var(--text-lg);
+    font-weight: var(--w-bold);
+    margin: var(--s6) 0 var(--s4);
+  }
+  .entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .entries li {
+    padding: var(--s4) 0;
+    border-top: var(--rule-w) solid var(--rule);
+  }
+  .entries li:last-child {
+    border-bottom: var(--rule-w) solid var(--rule);
+  }
+  .entry-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s3);
+    margin: 0 0 var(--s2);
+  }
+  .status {
+    font-size: var(--text-sm);
+    font-weight: var(--w-semi);
+    white-space: nowrap;
+  }
+  .status.on {
+    color: var(--sage);
+  }
+  .status.on::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--sage);
+    margin-right: var(--s2);
+    vertical-align: middle;
+  }
+  .status.soon {
+    color: var(--ink-2);
+  }
+  .status.soon::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    border: 2px solid var(--ink-3);
+    box-sizing: border-box;
+    margin-right: var(--s2);
+    vertical-align: middle;
+  }
+  .entry-title {
+    font-weight: var(--w-bold);
+  }
+  .entry-body {
+    margin: 0;
+    color: var(--ink-2);
+    line-height: var(--lead-text);
+    max-width: 62ch;
+  }
+  .entry-live {
+    margin: var(--s2) 0 0;
+    font-size: var(--text-sm);
+    font-weight: var(--w-medium);
+  }
+  .how p {
+    line-height: var(--lead-text);
+    margin: 0;
+  }
+  .reply {
+    margin-top: var(--s7);
+  }
+  .reply-under {
+    margin: var(--s3) 0 0;
+    color: var(--ink-2);
+  }
+  .reply-under a {
+    color: var(--teal);
+    font-weight: var(--w-medium);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .foot {
+    margin-top: var(--s7);
+    padding-top: var(--s4);
+    border-top: var(--rule-w) solid var(--rule);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    max-width: 52ch;
+  }
+  @media (max-width: 520px) {
+    .reply .btn {
+      display: flex;
+      width: 100%;
+    }
+  }
+</style>

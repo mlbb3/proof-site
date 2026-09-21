@@ -1,34 +1,8 @@
 ---
-// The reassurance page. Sent after a call, opened on a phone. Its job is not to
-// wow a stranger, it is to reassure a warm lead that Max will actually deliver
-// and that they stay in control. Trades-first, plain outcomes, real live proof,
-// one small low-risk next step.
-//
-// DRAFT copy in src/data/site.ts, for Max's sign-off and a humanizer pass.
-// Personalisation (a "?to=Name" line, a per-trade word, a short video) is a
-// deliberate fast-follow, not built here.
-import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import MorningBrief from '../components/MorningBrief.astro';
-import EvidenceInvoices from '../components/EvidenceInvoices.astro';
-import ProofSection from '../components/ProofSection.astro';
-import Outcomes from '../components/Outcomes.astro';
-import CloseSection from '../components/CloseSection.astro';
-import { SEGMENTS } from '../data/site';
-
-const { hero } = SEGMENTS.default;
+// The home page: the worked example with no trade framing. Sent to anyone Max
+// has spoken to whose trade does not have its own page yet.
+import Page from '../components/Page.astro';
+import { TRADES } from '../data/trades';
 ---
 
-<Base
-  title="Max Brown, back-office systems for small businesses"
-  description="I catch every enquiry, chase what you're owed, and send you a plain summary each morning. You stay in control. I keep it running."
->
-  <main>
-    <Hero hero={hero} />
-    <MorningBrief />
-    <EvidenceInvoices />
-    <ProofSection />
-    <Outcomes />
-    <CloseSection />
-  </main>
-</Base>
+<Page trade={TRADES.default} />

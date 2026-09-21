@@ -1,0 +1,431 @@
+---
+// The six evidence blocks, in brief order. Each is the document it represents
+// (enquiry log, invoice register, job book, timesheet, sales ledger, supplier
+// prices), set as a ruled table, and fits one phone viewport in its end state.
+// data-row / data-reveal / data-value hooks are what the replay hides and
+// reveals; without JS everything is simply visible.
+import { formatMoney, formatMoneyExact } from '../lib/money';
+import {
+  type Trade, plannedHours, loggedHours, priceDriftPct, cheaperByPence, fmtHours,
+} from '../data/trades';
+import { CAPTIONS, LIVE } from '../data/site';
+
+interface Props {
+  trade: Trade;
+}
+const { trade: t } = Astro.props;
+const first = t.enquiries[0];
+const extract = t.invoices.find((i) => i.extract) ?? t.invoices[0];
+const flagged = t.prices.find((p) => p.flagged)!;
+const rival = t.prices.find((p) => p.when === flagged.when && !p.flagged);
+const gap = t.timesheet.find((r) => r.note);
+const money = (p: number) => formatMoney(p, 'GBP');
+const exact = (p: number) => formatMoneyExact(p, 'GBP');
+---
+
+<div class="evidence" id="evidence">
+
+  <!-- 1. Enquiry log -->
+  <section class="ev" id="enquiry-log" aria-labelledby="h-enq">
+    <h2 id="h-enq"><span class="mark">Enquiry log</span> <span class="sub">overnight</span></h2>
+    <div class="ruled-wrap">
+      <table class="ruled">
+        <thead><tr><th>Time</th><th>From</th><th>Via</th><th>What they said</th><th>Status</th></tr></thead>
+        <tbody>
+          {t.enquiries.map((e) => (
+            <tr data-row>
+              <td class="num">{e.time}</td>
+              <td>{e.from}<br /><span class="muted">{e.place}</span></td>
+              <td>{e.channel}</td>
+              <td>{e.summary}</td>
+              <td><span class="mark" data-status={CAPTIONS.waiting}>{CAPTIONS.waiting}</span></td>
+            </tr>
+          ))}
+          <tr id="live-row" hidden>
+            <td class="num">now</td>
+            <td>You</td>
+            <td>Typed</td>
+            <td id="live-summary"></td>
+            <td><span id="live-status" data-drafting={CAPTIONS.drafting} data-waiting={CAPTIONS.waiting}></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="draft" data-reveal="draft">
+      <p class="draft-head">Draft reply to {first.from.split(' ')[0]}, in {t.owner}'s voice</p>
+      <p class="draft-text">{first.draft}</p>
+      <p class="draft-actions">
+        <button class="btn-line small" type="button" data-approve="st-1">Approve</button>
+        <button class="textlink" type="button">Edit</button>
+        <span class="mark" id="st-1" data-approved={CAPTIONS.approved}>{CAPTIONS.waiting}</span>
+      </p>
+    </div>
+
+    <form id="live-form" class="live" hidden autocomplete="off">
+      <label for="live-input">{LIVE.label}</label>
+      <div class="live-row">
+        <input id="live-input" type="text" maxlength="300" placeholder={LIVE.placeholder} required />
+        <button class="btn-line" type="submit" id="live-button">{LIVE.button}</button>
+      </div>
+      <div id="live-draft" class="draft" hidden data-sample={`Hi, thanks for getting in touch. Someone can come and take a look this week, Tuesday or Thursday morning if either suits. Could you tell me a bit more about what's happening?`}>
+        <p class="draft-head">Draft reply, in {t.owner}'s voice</p>
+        <p class="draft-text" id="live-draft-text"></p>
+        <p class="draft-actions">
+          <button class="btn-line small" type="button" data-approve="live-status">Approve</button>
+          <span class="live-note" id="live-note" data-resting={CAPTIONS.resting} data-live={LIVE.note}></span>
+        </p>
+      </div>
+    </form>
+
+    <p class="cap">{CAPTIONS.block1(t.owner)}</p>
+    <a class="back textlink" href="#brief">{CAPTIONS.back}</a>
+  </section>
+
+  <!-- 2. Invoice register -->
+  <section class="ev" id="invoice-register" aria-labelledby="h-inv">
+    <h2 id="h-inv"><span class="mark">Invoice register</span> <span class="sub">yesterday</span></h2>
+    <div class="two">
+      <figure class="pdf" data-reveal="pdf">
+        <div class="pdf-doc" aria-hidden="true">
+          <span class="pdf-tag">attachment.pdf</span>
+          <span class="ln w70"></span>
+          <span class="pdf-field">Invoice {extract.number}</span>
+          <span class="ln w50"></span>
+          <span class="ln w60"></span>
+          <span class="pdf-field">{extract.supplier}</span>
+          <span class="ln w40"></span>
+          <span class="ln w80"></span>
+          <span class="pdf-field total">Total {exact(extract.totalPence)}</span>
+        </div>
+        <figcaption>Three fields lifted straight off the PDF.</figcaption>
+      </figure>
+      <div class="ruled-wrap">
+        <table class="ruled">
+          <thead><tr><th>Supplier</th><th>Invoice</th><th class="num">Total</th><th>Status</th></tr></thead>
+          <tbody>
+            {t.invoices.map((i) => (
+              <tr data-row>
+                <td>{i.supplier}</td>
+                <td class="num">{i.number}</td>
+                <td class="num">{exact(i.totalPence)}</td>
+                <td class="ok">Filed</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="cap">{CAPTIONS.block2}</p>
+    <a class="back textlink" href="#brief">{CAPTIONS.back}</a>
+  </section>
+
+  <!-- 3. Job book -->
+  <section class="ev" id="job-book" aria-labelledby="h-job">
+    <h2 id="h-job"><span class="mark">Job book</span> <span class="sub">next week</span></h2>
+    <ul class="subjects" aria-label="Confirmation emails">
+      {t.jobs.map((j) => <li data-subject>{j.subject}</li>)}
+    </ul>
+    <div class="ruled-wrap">
+      <table class="ruled">
+        <thead><tr><th>Day</th><th>Customer</th><th>Job</th><th>Who</th><th>Source</th></tr></thead>
+        <tbody>
+          {t.jobs.map((j) => (
+            <tr data-row>
+              <td>{j.when}</td>
+              <td>{j.customer}<br /><span class="muted">{j.place}</span></td>
+              <td>{j.job}</td>
+              <td>{j.who}</td>
+              <td class="muted">Email confirmation</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="cap">{CAPTIONS.block3}</p>
+    <a class="back textlink" href="#brief">{CAPTIONS.back}</a>
+  </section>
+
+  <!-- 4. Timesheet -->
+  <section class="ev" id="timesheet" aria-labelledby="h-hrs">
+    <h2 id="h-hrs"><span class="mark">Timesheet</span> <span class="sub">yesterday</span></h2>
+    <div class="ruled-wrap">
+      <table class="ruled">
+        <thead><tr><th>Name</th><th class="num">Planned</th><th class="num">Logged</th><th>Note</th></tr></thead>
+        <tbody>
+          {t.timesheet.map((r) => (
+            <tr data-row class={r.note ? 'flag' : ''}>
+              <td>{r.name}</td>
+              <td class="num">{fmtHours(r.planned)}</td>
+              <td class="num" data-value={r.logged} data-format="hours">{fmtHours(r.logged)}</td>
+              <td>{r.note && <span class="mark" data-reveal="gap">{r.note}</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Total</td>
+            <td class="num">{fmtHours(plannedHours(t))}</td>
+            <td class="num" data-value={loggedHours(t)} data-format="hours">{fmtHours(loggedHours(t))}</td>
+            <td>{gap ? '1 gap' : ''}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="cap">{CAPTIONS.block4}</p>
+    <a class="back textlink" href="#brief">{CAPTIONS.back}</a>
+  </section>
+
+  <!-- 5. Sales ledger -->
+  <section class="ev" id="sales-ledger" aria-labelledby="h-led">
+    <h2 id="h-led"><span class="mark">Sales ledger</span> <span class="sub">yesterday</span></h2>
+    <dl class="figures">
+      <div><dt>Invoiced</dt><dd class="num" data-value={Math.round(t.invoicedPence / 100)} data-format="money">{money(t.invoicedPence)}</dd></div>
+      <div><dt>Paid</dt><dd class="num" data-value={Math.round(t.paidPence / 100)} data-format="money">{money(t.paidPence)}</dd></div>
+      <div><dt>Over 30 days</dt><dd class="num" data-value={t.overdue.length} data-format="int">{t.overdue.length}</dd></div>
+    </dl>
+    <div class="ruled-wrap">
+      <table class="ruled">
+        <thead><tr><th>Customer</th><th>Invoice</th><th class="num">Raised</th><th class="num">Amount</th><th>Status</th></tr></thead>
+        <tbody>
+          {t.overdue.map((o) => (
+            <tr data-row>
+              <td>{o.customer}</td>
+              <td class="num">{o.number}</td>
+              <td class="num">{o.daysAgo} days ago</td>
+              <td class="num">{money(o.amountPence)}</td>
+              <td><span class="mark">Chaser drafted</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="cap">{CAPTIONS.block5(t.owner)}</p>
+    <a class="back textlink" href="#brief">{CAPTIONS.back}</a>
+  </section>
+
+  <!-- 6. Supplier prices -->
+  <section class="ev" id="supplier-prices" aria-labelledby="h-pri">
+    <h2 id="h-pri"><span class="mark">Supplier prices</span> <span class="sub">{t.part}</span></h2>
+    <div class="ruled-wrap">
+      <table class="ruled">
+        <thead><tr><th>When</th><th>Supplier</th><th class="num">Unit price</th><th></th></tr></thead>
+        <tbody>
+          {t.prices.map((p) => (
+            <tr data-row class={p.flagged ? 'flag' : ''}>
+              <td>{p.when}</td>
+              <td>{p.supplier}</td>
+              <td class="num">{p.flagged ? <span class="mark">{exact(p.unitPence)}</span> : exact(p.unitPence)}</td>
+              <td>{p.flagged && <span class="mark" data-reveal="drift">+{priceDriftPct(t)}% since {t.prices[0].when}</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {rival && (
+      <p class="cap">
+        {rival.supplier} was {exact(cheaperByPence(t))} cheaper for the same thing this week. {CAPTIONS.block6}
+      </p>
+    )}
+    <a class="back textlink" href="#brief">{CAPTIONS.back}</a>
+  </section>
+
+</div>
+
+<script>
+  import { mountLive } from '../scripts/live';
+  mountLive();
+</script>
+
+<style>
+  .evidence {
+    display: grid;
+    gap: var(--s7);
+    padding: var(--s6) 0 var(--s5);
+  }
+  .ev h2 {
+    font-size: var(--text-md);
+    font-weight: var(--w-bold);
+    margin: 0 0 var(--s4);
+    scroll-margin-top: var(--s4);
+  }
+  .ev {
+    scroll-margin-top: var(--s4);
+  }
+  .sub {
+    font-weight: var(--w-reg);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    margin-left: var(--s2);
+  }
+  .cap {
+    margin: var(--s4) 0 0;
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+    max-width: 56ch;
+  }
+  .back {
+    display: inline-block;
+    margin-top: var(--s3);
+    font-size: var(--text-sm);
+  }
+
+  /* Draft reply, the one stateful control on the page. */
+  .draft {
+    margin-top: var(--s4);
+    padding: var(--s4);
+    border: var(--rule-w) solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--panel);
+  }
+  .draft[hidden] {
+    display: none;
+  }
+  .draft-head {
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+    margin: 0 0 var(--s2);
+  }
+  .draft-text {
+    margin: 0 0 var(--s3);
+    line-height: var(--lead-text);
+    max-width: 58ch;
+  }
+  .draft-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s3) var(--s4);
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+  .btn-line.small {
+    min-height: 36px;
+    padding: 0 var(--s4);
+    font-size: var(--text-sm);
+  }
+  .live {
+    margin-top: var(--s5);
+  }
+  .live[hidden] {
+    display: none;
+  }
+  .live label {
+    display: block;
+    font-weight: var(--w-semi);
+    margin-bottom: var(--s2);
+  }
+  .live-row {
+    display: flex;
+    gap: var(--s2);
+  }
+  .live-row input {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 var(--s3);
+    font: inherit;
+    color: var(--ink);
+    border: var(--rule-w) solid var(--ink-3);
+    border-radius: 6px;
+    background: var(--panel);
+  }
+  .live-row input::placeholder {
+    color: var(--ink-2);
+  }
+  .live-note {
+    color: var(--ink-2);
+  }
+
+  /* PDF outline: a ruled rectangle at document proportions. */
+  .two {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s5);
+  }
+  .pdf {
+    margin: 0;
+  }
+  .pdf-doc {
+    display: grid;
+    gap: var(--s2);
+    max-width: 17rem;
+    padding: var(--s4);
+    background: var(--panel);
+    border: var(--rule-w) solid var(--rule);
+    border-radius: 2px;
+    box-shadow: 2px 3px 0 var(--rule);
+  }
+  .pdf-tag {
+    font-size: var(--text-sm);
+    color: var(--ink-3);
+    margin-bottom: var(--s1);
+  }
+  .ln {
+    height: 7px;
+    border-radius: 2px;
+    background: var(--rule);
+  }
+  .w40 { width: 40%; } .w50 { width: 50%; } .w60 { width: 60%; } .w70 { width: 70%; } .w80 { width: 80%; }
+  .pdf-field {
+    justify-self: start;
+    font-size: var(--text-sm);
+    font-weight: var(--w-medium);
+    font-variant-numeric: var(--figures);
+    background: linear-gradient(transparent 12%, var(--mark) 12% 88%, transparent 88%);
+    padding: 0 0.12em;
+  }
+  .pdf-field.total {
+    font-weight: var(--w-bold);
+  }
+  figcaption {
+    margin-top: var(--s2);
+    font-size: var(--text-sm);
+    color: var(--ink-3);
+  }
+  @media (min-width: 640px) {
+    .two {
+      grid-template-columns: minmax(0, 17rem) 1fr;
+      align-items: start;
+    }
+  }
+
+  /* Job book provenance: the subject lines the rows came from. */
+  .subjects {
+    list-style: none;
+    margin: 0 0 var(--s4);
+    padding: 0;
+    display: grid;
+    gap: var(--s1);
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .subjects li::before {
+    content: '\2709\00a0\00a0';
+    color: var(--ink-3);
+  }
+
+  /* Sales ledger figures: three numbers, set as a definition list, not tiles. */
+  .figures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s4) var(--s6);
+    margin: 0 0 var(--s4);
+    padding: 0 0 var(--s3);
+    border-bottom: 2px solid var(--rule-strong);
+  }
+  .figures div {
+    display: flex;
+    flex-direction: column;
+  }
+  .figures dt {
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .figures dd {
+    margin: 0;
+    font-size: var(--text-lg);
+    font-weight: var(--w-bold);
+    font-variant-numeric: var(--figures);
+  }
+</style>

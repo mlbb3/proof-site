@@ -1,0 +1,76 @@
+---
+// The whole page for one trade. Single column on a phone. Above 1100px the
+// brief sits in a sticky left column while the paperwork scrolls on the
+// right, so on a laptop the pairing between a line and its evidence is
+// visible without scrolling; on a phone the tap does that job.
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Brief from './Brief.astro';
+import Evidence from './Evidence.astro';
+import Closing from './Closing.astro';
+import type { Trade } from '../data/trades';
+
+interface Props {
+  trade: Trade;
+}
+const { trade } = Astro.props;
+const title = trade.slug === 'default'
+  ? 'Max Brown. Your admin, done overnight.'
+  : `Max Brown. Your admin, done overnight, for ${trade.label.toLowerCase()}.`;
+---
+
+<Base
+  title={title}
+  description="Enquiries answered, invoices filed, hours checked, one plain message every morning. Built and run by Max Brown for small businesses."
+>
+  <main data-trade={trade.slug}>
+    <div class="col">
+      <Hero trade={trade} />
+    </div>
+    <div class="spine">
+      <div class="spine-brief">
+        <Brief trade={trade} />
+      </div>
+      <div class="spine-evidence">
+        <Evidence trade={trade} />
+      </div>
+    </div>
+    <div class="col">
+      <Closing />
+    </div>
+  </main>
+</Base>
+
+<style>
+  main {
+    background: var(--panel);
+  }
+  .col {
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .spine {
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  @media (min-width: 1100px) {
+    /* One left edge for the whole page: the prose columns widen to the spine
+       and their text stays on the reading measure. */
+    .col {
+      max-width: var(--page-max);
+    }
+    .spine {
+      max-width: var(--page-max);
+      display: grid;
+      grid-template-columns: minmax(0, 27rem) minmax(0, 1fr);
+      gap: var(--s8);
+      align-items: start;
+    }
+    .spine-brief {
+      position: sticky;
+      top: var(--s4);
+    }
+  }
+</style>

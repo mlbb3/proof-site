@@ -1,0 +1,15 @@
+---
+// One durable page per trade: /for/roofing, /for/house-clearance, and so on.
+// The whole worked example changes with the trade, not just the headline.
+// Add a trade by adding an entry to TRADES in src/data/trades.ts. A prospect's
+// name is an optional ?to= on the link, never a route, so nothing is baked in.
+import Page from '../../components/Page.astro';
+import { TRADE_PAGES } from '../../data/trades';
+
+export function getStaticPaths() {
+  return TRADE_PAGES.map((trade) => ({ params: { trade: trade.slug }, props: { trade } }));
+}
+const { trade } = Astro.props;
+---
+
+<Page trade={trade} />

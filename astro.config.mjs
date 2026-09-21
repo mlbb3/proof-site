@@ -1,13 +1,15 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel';
 
-// Permanent, prerendered calling card. Static by default.
-// The one server function (the live surface) is added at build-order step 4
-// via the Vercel adapter with a single non-prerendered endpoint. Not before.
+// A prerendered calling card, plus one server function: POST /api/draft, the
+// live surface. Every page is static; only that endpoint opts out with
+// `prerender = false`.
 export default defineConfig({
   output: 'static',
-  // site is the canonical URL; set to the real domain when it lands.
-  // Absolute og:url / og:image depend on this.
+  devToolbar: { enabled: false },
+  adapter: vercel(),
+  // Canonical URL. Set to the real domain when it lands; og:url depends on it.
   site: 'https://example.com',
   build: {
     // One inlined stylesheet keeps the WhatsApp webview from blocking on CSS.
