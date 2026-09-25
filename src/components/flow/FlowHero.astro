@@ -24,10 +24,10 @@ const { trade } = Astro.props;
   .who-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
   .who-name { font-weight: var(--w-bold); }
   .who-role { color: var(--ink-2); font-size: var(--text-xs); }
-  .wa { margin-left: auto; flex: 0 0 auto; padding: 6px 12px; border-radius: 999px; background: var(--sys); color: #fff; font-weight: var(--w-semi); font-size: var(--text-sm); text-decoration: none; }
+  .wa { margin-left: auto; flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--sys); color: #fff; font-weight: var(--w-semi); font-size: var(--text-sm); text-decoration: none; }
   .personal { margin: 0 0 var(--s2); font-weight: var(--w-medium); }
   .personal[hidden] { display: none; }
-  .kicker { margin: 0 0 var(--s1); color: var(--sys); font-weight: var(--w-semi); }
+  .kicker { display: inline-block; margin: 0 0 var(--s3); padding: 4px 12px; border-radius: 999px; background: var(--sys-tint); color: var(--sys); font-weight: var(--w-semi); font-size: var(--text-sm); }
   h1 { margin: 0 0 var(--s2); font-size: var(--text-xl); font-weight: var(--w-bold); line-height: var(--lead-tight); letter-spacing: -0.02em; }
   .accent { color: var(--sys); }
   .sub { margin: 0; color: var(--ink-2); font-size: var(--text-md); max-width: 40ch; }

@@ -40,8 +40,26 @@ document.querySelectorAll<HTMLButtonElement>('[data-approve]').forEach((btn) => 
     const card = btn.closest('[data-draft]');
     const done = card?.querySelector<HTMLElement>('[data-done]');
     const actions = btn.parentElement;
+    card?.querySelector('[data-text]')?.setAttribute('contenteditable', 'false');
     if (actions) actions.hidden = true;
     if (done) done.hidden = false;
+  });
+});
+
+// Edit: the draft really is editable before it goes.
+document.querySelectorAll<HTMLButtonElement>('[data-edit]').forEach((btn) => {
+  const label = btn.textContent ?? 'Edit';
+  btn.addEventListener('click', () => {
+    const text = btn.closest('[data-draft]')?.querySelector<HTMLElement>('[data-text]');
+    if (!text) return;
+    const on = text.getAttribute('contenteditable') !== 'true';
+    text.setAttribute('contenteditable', on ? 'true' : 'false');
+    btn.textContent = on ? btn.dataset.doneLabel ?? 'Done' : label;
+    if (on) {
+      text.focus();
+      const r = document.createRange(); r.selectNodeContents(text); r.collapse(false);
+      const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r);
+    }
   });
 });
 
