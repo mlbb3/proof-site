@@ -29,14 +29,15 @@ const perDay = days.map((d) => t.jobs.filter((j) => j.when === d).length);
 const money = (p: number) => formatMoney(p, 'GBP');
 ---
 
-<section class="desk" aria-labelledby="mail-subject">
+<section class="desk" aria-labelledby="mail-subject" data-stop="desk">
   <article class="mail">
     <p class="mail-bar" aria-hidden="true"><span>&lsaquo; Inbox</span><span>1 of 12</span></p>
     <header class="mail-head">
       <span class="avatar" aria-hidden="true">MB</span>
       <div class="mail-meta">
         <p class="mail-from"><span>Morning brief</span><span class="mail-time">07:00</span></p>
-        <h2 class="mail-subject" id="mail-subject"><span id="mail-greet">Morning, {t.owner}.</span> {t.enquiries.length} enquiries, {money(overdue)} overdue, one price up.</h2>
+        <p class="mail-to">to <span data-bind="owner">{t.owner}</span>, <span data-bind="firm">{t.firm}</span></p>
+        <h2 class="mail-subject" id="mail-subject">Morning, <span data-bind="owner">{t.owner}</span>. {t.enquiries.length} enquiries, {money(overdue)} overdue, one price up.</h2>
       </div>
     </header>
 
@@ -44,8 +45,8 @@ const money = (p: number) => formatMoney(p, 'GBP');
       <section class="tile wide rv" style="--i:0" aria-label="Enquiries">
         <p class="tile-head"><Icon name="chat" /> Enquiries <span class="count">{t.enquiries.length} new</span></p>
         <a class="follow" href="#beat-1">
-          <span class="follow-who">{followed.from}, {followed.place}</span>
-          <span class="follow-what">{followed.summary}</span>
+          <span class="follow-who"><span data-bind="customer">{followed.from}</span>, <span data-bind="town">{followed.place}</span></span>
+          <span class="follow-what" data-bind="summary">{followed.summary}</span>
           <span class="follow-foot">
             <span class="state ready"><Icon name="reply" size={15} /> {FLOW.replyReady}</span>
             <span class="follow-cue">{FLOW.follow} <span aria-hidden="true">&rsaquo;</span></span>
@@ -95,7 +96,7 @@ const money = (p: number) => formatMoney(p, 'GBP');
       </section>
     </div>
   </article>
-  <p class="honesty">{FLOW.honesty}</p>
+  <p class="honesty" data-honesty>{FLOW.honesty}</p>
 </section>
 
 <style>
@@ -150,6 +151,11 @@ const money = (p: number) => formatMoney(p, 'GBP');
     font-weight: var(--w-reg);
     font-size: var(--text-xs);
     font-variant-numeric: var(--figures);
+  }
+  .mail-to {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--ink-3);
   }
   .mail-subject {
     margin: 2px 0 0;

@@ -18,6 +18,11 @@ export interface Enquiry {
   draft?: string;
   /** The customer's own words, for the chat bubble. First enquiry only. */
   message?: string;
+  /** Followed job only: when the reply books them in, what was done, what it cost. */
+  slotDay?: 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri';
+  slotTime?: string;
+  work?: string;
+  pricePence?: number;
 }
 export interface Invoice {
   supplier: string;
@@ -89,6 +94,10 @@ const plumbing: Trade = {
   enquiries: [
     { time: '18:42', from: 'Ben Carrick', place: 'Maidstone', channel: 'WhatsApp', summary: 'Boiler making a banging noise, wants someone this week',
       message: "Hi, the boiler's making a banging noise every time the heating comes on. Can someone come this week?",
+      slotDay: 'Thu',
+      slotTime: '09:00',
+      work: 'Pump replaced and system bled',
+      pricePence: 28500,
       draft: "Hi Ben, thanks for getting in touch. Tom can be with you Thursday morning if that works. Is the noise there all the time, or just when it fires up?" },
     { time: '20:15', from: 'Lena Kowalski', place: 'Tonbridge', channel: 'Web form', summary: 'Quote for moving a radiator, sends two photos' },
     { time: '22:03', from: 'Harbour View Guest House', place: 'Whitstable', channel: 'Email', summary: 'Annual gas safety certs for 9 rooms, asks for dates in October' },
@@ -143,6 +152,10 @@ const clearance: Trade = {
   enquiries: [
     { time: '18:20', from: 'Margaret Ellis', place: 'Croydon', channel: 'Phone', summary: 'Full clearance of her late father\'s flat, needs it done before the 30th',
       message: "Hello, I need my late father's flat cleared before the 30th. Could someone come and have a look?",
+      slotDay: 'Wed',
+      slotTime: '14:00',
+      work: 'Full flat clearance, 2 bed',
+      pricePence: 115000,
       draft: "Hi Margaret, thanks for calling, and sorry for your loss. We can come and take a look Wednesday afternoon if that suits. Roughly how many rooms are we clearing?" },
     { time: '19:55', from: 'Ashworth Lettings', place: 'Streatham', channel: 'Email', summary: 'End of tenancy clearance, 2 bed, keys with the agent' },
     { time: '21:30', from: 'Tom Bradley', place: 'Sutton', channel: 'WhatsApp', summary: 'Garage and shed, mostly timber and old paint tins' },
@@ -197,6 +210,10 @@ const roofing: Trade = {
   enquiries: [
     { time: '17:50', from: 'Paul Redmond', place: 'Uckfield', channel: 'WhatsApp', summary: 'Water coming in round the chimney after last night\'s rain',
       message: "Hi, water's coming in round the chimney after last night's rain. Can you come this week?",
+      slotDay: 'Tue',
+      slotTime: '09:00',
+      work: 'Chimney flashing repair',
+      pricePence: 64000,
       draft: "Hi Paul, thanks for the message. Jack can come and have a look Tuesday morning if that works. Is it coming through the ceiling, or just staining so far?" },
     { time: '19:30', from: 'Sarah Lindqvist', place: 'Lewes', channel: 'Web form', summary: 'Quote for a full re-roof, 1930s semi, sends three photos' },
     { time: '21:12', from: 'Oakwood Property', place: 'Haywards Heath', channel: 'Email', summary: 'Flat roof survey on a block of six, wants a date in October' },
@@ -251,6 +268,10 @@ const electrical: Trade = {
   enquiries: [
     { time: '18:05', from: 'Helen Barrow', place: 'Bedminster', channel: 'WhatsApp', summary: 'Consumer unit keeps tripping, wants someone this week',
       message: "Hi, the consumer unit keeps tripping. Could someone come out this week?",
+      slotDay: 'Wed',
+      slotTime: '14:00',
+      work: 'Fault find and new RCD',
+      pricePence: 24000,
       draft: "Hi Helen, thanks for getting in touch. Owen can be with you Wednesday afternoon if that suits. Is it one circuit that trips, or the whole board?" },
     { time: '19:48', from: 'Marcus Stein', place: 'Clifton', channel: 'Web form', summary: 'Quote for an EV charger, driveway, sends a photo of the fuse board' },
     { time: '21:40', from: 'Kingsdown Dental', place: 'Kingsdown', channel: 'Email', summary: 'EICR on the practice before the lease renews, dates in October' },
@@ -304,6 +325,10 @@ const building: Trade = {
   enquiries: [
     { time: '18:15', from: 'Claire Denton', place: 'Horsforth', channel: 'WhatsApp', summary: 'Single storey rear extension, has plans, wants a quote',
       message: "Hi, we've got plans for a single storey rear extension. Could you come and quote for it?",
+      slotDay: 'Thu',
+      slotTime: '09:30',
+      work: 'Site survey and quote',
+      pricePence: 35000,
       draft: "Hi Claire, thanks for the message. Pete can come round Thursday morning to walk through the plans if that works. Have you got building regs drawings as well, or just the planning set?" },
     { time: '19:20', from: 'Nadia Rahman', place: 'Roundhay', channel: 'Web form', summary: 'Garage conversion to a home office, sends four photos' },
     { time: '21:55', from: 'Kirkstall Lettings', place: 'Kirkstall', channel: 'Email', summary: 'Damp survey and repair on two flats, wants dates in October' },
@@ -358,6 +383,10 @@ const lettings: Trade = {
   enquiries: [
     { time: '18:30', from: 'Daniel Okafor', place: 'Didsbury', channel: 'Web form', summary: 'Wants to view the 2 bed on Barlow Moor Road this week',
       message: "Hi, is the 2 bed on Barlow Moor Road still available? Could I view it this week?",
+      slotDay: 'Wed',
+      slotTime: '14:00',
+      work: 'Tenant find, 2 bed Barlow Moor Road',
+      pricePence: 78000,
       draft: "Hi Daniel, thanks for getting in touch. We can show you round Wednesday afternoon if that suits. Would you be looking to move in before the end of the month?" },
     { time: '19:10', from: 'Mrs Patterson (landlord)', place: 'Chorlton', channel: 'Email', summary: 'Tenant reports boiler not firing, flat 3, wants it sorted' },
     { time: '21:25', from: 'Lucy Grant', place: 'Withington', channel: 'WhatsApp', summary: 'Asking if the studio on Wilmslow Road allows a cat' },
@@ -411,6 +440,10 @@ const gardening: Trade = {
   enquiries: [
     { time: '17:40', from: 'Alison Reeve', place: 'Guildford', channel: 'WhatsApp', summary: 'Wants the back garden landscaped, patio and lawn, before spring',
       message: "Hi, we'd like the back garden done, patio and lawn, before spring. Could you come and have a look?",
+      slotDay: 'Tue',
+      slotTime: '14:00',
+      work: 'Patio and lawn, back garden',
+      pricePence: 240000,
       draft: "Hi Alison, thanks for the message. Will can come round Tuesday afternoon to have a look if that works. Roughly what size is the garden, and is it level?" },
     { time: '19:05', from: 'The Willows Care Home', place: 'Godalming', channel: 'Email', summary: 'Fortnightly grounds maintenance contract, asks for a quote' },
     { time: '20:50', from: 'Ian Blackwood', place: 'Farnham', channel: 'Web form', summary: 'Two large conifers taken down, sends a photo' },
@@ -500,11 +533,35 @@ export function fmtHours(h: number): string {
   return Number.isInteger(h) ? String(h) : h.toFixed(1);
 }
 
+/** The one job the page follows, with everything the beats need, derived once. */
+export function followedJob(t: Trade) {
+  const e = t.enquiries[0];
+  const prefix = (t.overdue[0]?.number ?? 'INV-1000').replace(/\d+$/, '');
+  const lastNum = Math.max(...t.overdue.map((o) => Number(o.number.replace(/\D/g, '')) || 0), 1000);
+  return {
+    from: e.from,
+    first: e.from.split(' ')[0],
+    place: e.place,
+    channel: e.channel,
+    time: e.time,
+    summary: e.summary,
+    message: e.message ?? e.summary,
+    draft: e.draft ?? '',
+    slotDay: e.slotDay ?? 'Tue',
+    slotTime: e.slotTime ?? '09:00',
+    work: e.work ?? 'Job done',
+    pricePence: e.pricePence ?? 50000,
+    invoice: `${prefix}${lastNum + 21}`,
+  };
+}
+
 /** The draft the live endpoint tells Claude to write. */
-export function draftSystemPrompt(t: Trade): string {
+export function draftSystemPrompt(t: Trade, who: { owner?: string; firm?: string } = {}): string {
+  const owner = who.owner || t.owner;
+  const firm = who.firm ? `${who.firm}, a ${t.label.toLowerCase()} business` : `${t.firm}, ${t.does}`;
   return (
-    `You draft short replies for ${t.owner}, the owner of ${t.firm}, ${t.does}, to enquiries from potential customers. ` +
-    `Write as ${t.owner}: friendly, plain, brief, British English. Two to four sentences. ` +
+    `You draft short replies for ${owner}, the owner of ${firm}, to enquiries from potential customers. ` +
+    `Write as ${owner}: friendly, plain, brief, British English. Two to four sentences. ` +
     `You may thank them, say roughly when someone could come (offer a weekday morning or afternoon), and ask one clarifying question. ` +
     `You must not diagnose the problem, quote or estimate any price, mention regulations or safety, promise a specific time, or give technical advice. ` +
     `If the message is not an enquiry to this kind of business, reply only: "Thanks for the message. Could you tell me a bit more about the job?" ` +

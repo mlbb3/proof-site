@@ -101,3 +101,15 @@ validator on the state palette; GSAP only for call mode and small transforms.
 
 ## Decided
 No mention of real clients anywhere on the page (Max, 25 Sep, after the stress test raised it).
+
+## Next build (Max, 25 Sep, after UX/UI/ambition reviews)
+Beats 2-4 and call mode, plus two ambition moves:
+- **Cascade.** A message typed into "try it" (by the prospect, or by Max on a call)
+  doesn't stop at a draft: Approve drops it into the diary (beat 2) and into
+  tomorrow's 07:00 email (beat 4). Live once the Anthropic key is set; sample
+  reply until then, labelled.
+- **Richer ?to=.** `?to=Name&firm=...&town=...&job=...` The owner name, firm and
+  town replace the worked example's everywhere; `job` (the enquiry Max heard on
+  the call) replaces the followed customer's message, and a reply is drafted
+  for it live. Numbers stay made up and labelled.
+Not now: pre-filled WhatsApp, per-prospect pages.

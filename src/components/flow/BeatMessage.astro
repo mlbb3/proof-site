@@ -11,7 +11,7 @@ interface Props { trade: Trade }
 const { trade: t } = Astro.props;
 const e = t.enquiries[0];
 const B = FLOW.beat1;
-const sample = `Hi, thanks for getting in touch. Someone can come and take a look this week, Tuesday or Thursday morning if either suits. Could you tell me a bit more about what's happening?`;
+const sample = `Hi, thanks for getting in touch. Someone can come and take a look this week. Could you tell me a bit more about what's happening?`;
 ---
 
 <section class="beat" id="beat-1" aria-labelledby="beat-1-title">
@@ -19,20 +19,22 @@ const sample = `Hi, thanks for getting in touch. Someone can come and take a loo
   <h2 id="beat-1-title">{B.title}</h2>
 
   <div class="thread">
-    <div class="bubble rv" style="--i:0">
-      <p class="b-who">{e.from} <span>{e.channel}, {e.time}</span></p>
-      <p class="b-text">{e.message ?? e.summary}</p>
+    <div class="bubble rv" style="--i:0" data-stop="b1-msg">
+      <p class="b-who"><span data-bind="customer">{e.from}</span> <span class="b-when">{e.channel}, {e.time}</span></p>
+      <p class="b-text" data-bind="message">{e.message ?? e.summary}</p>
     </div>
 
-    <p class="sys-line rv" style="--i:1"><span class="sys-dot" aria-hidden="true"></span> {B.drafted(t.owner)}</p>
+    <div class="reply" data-stop="b1-reply">
+    <p class="sys-line rv" style="--i:1"><span class="sys-dot" aria-hidden="true"></span> <span>{B.drafted[0]}<span data-bind="owner">{t.owner}</span>{B.drafted[1]}</span></p>
 
-    <div class="draft rv" style="--i:2" data-draft>
-      <p class="d-text" data-text>{e.draft}</p>
+    <div class="draft rv" style="--i:2" data-draft data-effect="book">
+      <p class="d-text" data-text data-main-draft>{e.draft}</p>
       <div class="d-actions">
         <button class="approve" type="button" data-approve>{B.approve}</button>
         <button class="textlink" type="button" data-edit data-done-label="Done">{B.edit}</button>
       </div>
       <p class="d-done" data-done hidden><Icon name="check" size={16} /> {B.sent} {e.time.replace(/:(\d)\d$/, (_, d) => ':' + d + '4')}. <span>{B.next}</span></p>
+    </div>
     </div>
   </div>
 
@@ -42,9 +44,14 @@ const sample = `Hi, thanks for getting in touch. Someone can come and take a loo
     <label for="try-input">{B.tryLabel}</label>
     <textarea id="try-input" rows="3" maxlength="300" placeholder={B.tryPlaceholder} required></textarea>
     <button class="try-btn" type="submit" id="try-btn">{B.tryButton}</button>
-    <div class="draft" id="try-out" hidden>
-      <p class="d-text" id="try-text"></p>
+    <div class="draft" id="try-out" hidden data-draft data-effect="cascade">
+      <p class="d-text" id="try-text" data-text></p>
       <p class="try-note" id="try-note"></p>
+      <div class="d-actions">
+        <button class="approve" type="button" data-approve>{B.approve}</button>
+        <button class="textlink" type="button" data-edit data-done-label="Done">{B.edit}</button>
+      </div>
+      <p class="d-done" data-done hidden><Icon name="check" size={16} /> {B.sent}. <span>In the diary for <b data-cascade-when></b>. <a class="textlink" href="#beat-2">See it</a></span></p>
     </div>
   </form>
 </section>
@@ -78,7 +85,8 @@ const sample = `Hi, thanks for getting in touch. Someone can come and take a loo
     padding: var(--s3) var(--s4);
   }
   .b-who { margin: 0 0 2px; font-weight: var(--w-semi); font-size: var(--text-sm); }
-  .b-who span { color: var(--ink-3); font-weight: var(--w-reg); margin-left: 4px; }
+  .b-when { color: var(--ink-3); font-weight: var(--w-reg); margin-left: 4px; }
+  .reply { display: grid; gap: var(--s3); }
   .b-text { margin: 0; line-height: var(--lead-snug); }
   .sys-line {
     display: flex;

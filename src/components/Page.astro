@@ -1,12 +1,16 @@
 ---
 // Follow one job (brief v2). Opens on the 07:00 email so the system is in the
-// first screen; one line in it is the job the page follows down; the page then
-// zooms out to the week. SLICE 1: top + beat 1 + close. Beats 2-4 and call
-// mode follow once this slice is approved.
+// first screen; one line in it is the job the page follows through four
+// beats; then the close. Phone: one column. Laptop (1100px+): the email stays
+// on the left while the job's journey scrolls on the right. Call mode (900px+,
+// for screen-sharing) steps through the [data-stop] elements one at a time.
 import Base from '../layouts/Base.astro';
 import FlowHero from './flow/FlowHero.astro';
 import EmailMock from './flow/EmailMock.astro';
 import BeatMessage from './flow/BeatMessage.astro';
+import BeatDiary from './flow/BeatDiary.astro';
+import BeatChase from './flow/BeatChase.astro';
+import BeatWeek from './flow/BeatWeek.astro';
 import FlowClose from './flow/FlowClose.astro';
 import type { Trade } from '../data/trades';
 
@@ -18,12 +22,27 @@ const title = trade.slug === 'default'
 ---
 <Base title={title} description="Enquiries answered, invoices chased, one plain message every morning. Built and run by Max Brown.">
   <main data-trade={trade.slug}>
-    <FlowHero trade={trade} />
-    <EmailMock trade={trade} />
-    <div class="gap" aria-hidden="true"></div>
-    <BeatMessage trade={trade} />
-    <FlowClose />
+    <div class="col-a" id="col-a">
+      <FlowHero trade={trade} />
+      <EmailMock trade={trade} />
+    </div>
+    <div class="col-b">
+      <BeatMessage trade={trade} />
+      <BeatDiary trade={trade} />
+      <BeatChase trade={trade} />
+      <BeatWeek trade={trade} />
+      <FlowClose />
+    </div>
   </main>
+
+  <button class="walk" id="walk" type="button" hidden>Walk me through</button>
+  <nav class="callbar" id="callbar" aria-label="Walkthrough" hidden>
+    <button type="button" data-call="prev" aria-label="Back">&lsaquo; Back</button>
+    <span class="call-dots" id="call-dots" aria-hidden="true"></span>
+    <span class="call-count" id="call-count" aria-live="polite"></span>
+    <button type="button" data-call="next" class="call-next">Next &rsaquo;</button>
+    <button type="button" data-call="exit" class="call-exit">End</button>
+  </nav>
 </Base>
 <script>
   import '../scripts/flow';
@@ -34,5 +53,72 @@ const title = trade.slug === 'default'
     margin-inline: auto;
     padding-inline: var(--gutter);
   }
-  .gap { height: var(--s6); }
+  .col-b { display: grid; gap: var(--s6); margin-top: var(--s6); }
+  @media (min-width: 1100px) {
+    main {
+      max-width: var(--page-max);
+      display: grid;
+      grid-template-columns: minmax(0, 30rem) minmax(0, 34rem);
+      justify-content: center;
+      column-gap: var(--s8);
+      align-items: start;
+    }
+    .col-a { position: sticky; top: var(--stick-top, var(--s4)); padding-bottom: var(--s4); }
+    .col-b { margin-top: 0; padding-top: var(--s5); }
+  }
+
+  .walk {
+    position: fixed;
+    right: var(--s4);
+    bottom: var(--s4);
+    z-index: 5;
+    display: none;
+    min-height: 44px;
+    padding: 0 var(--s5);
+    border: 2px solid var(--sys);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--sys);
+    font: inherit;
+    font-weight: var(--w-semi);
+    cursor: pointer;
+    box-shadow: 0 6px 18px -8px rgba(20, 30, 36, 0.35);
+  }
+  @media (min-width: 900px) {
+    .walk:not([hidden]) { display: inline-flex; align-items: center; }
+  }
+
+  .callbar {
+    position: fixed;
+    left: 50%;
+    bottom: var(--s4);
+    transform: translateX(-50%);
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+    padding: var(--s2);
+    background: var(--ink);
+    color: #fff;
+    border-radius: 999px;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+  }
+  .callbar[hidden] { display: none; }
+  .callbar button {
+    min-height: 44px;
+    padding: 0 var(--s4);
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-weight: var(--w-semi);
+    cursor: pointer;
+  }
+  .callbar button:focus-visible { box-shadow: 0 0 0 2px var(--ink), 0 0 0 4px #fff; }
+  .callbar .call-next { background: var(--need); color: var(--ink); }
+  .callbar .call-exit { color: #c9d1d5; font-weight: var(--w-reg); }
+  .call-dots { display: flex; gap: 6px; }
+  .call-count { font-variant-numeric: var(--figures); color: #c9d1d5; min-width: 3.5em; }
 </style>

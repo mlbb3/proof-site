@@ -204,3 +204,17 @@ time,
   opacity: 1;
   transform: none;
 }
+
+/* Call mode: Max screen-shares and steps through the [data-stop] elements.
+   Bigger type, one column, what's been covered dims, what's ahead stays hidden. */
+html.call { font-size: 118%; }
+html.call main { display: block; max-width: 40rem; padding-bottom: 8rem; }
+html.call #col-a { position: static; }
+html.call .col-b { margin-top: var(--s6); padding-top: 0; }
+.call [data-stop] { scroll-margin: 1.5rem 0 7rem; transition: opacity 0.3s var(--ease-out); }
+.call [data-stop].past { opacity: 0.3; }
+.call [data-stop].ahead,
+.call .ahead { visibility: hidden; }
+.call-dots i { display: block; width: 8px; height: 8px; border-radius: 999px; background: #5a6166; }
+.call-dots i.on { background: var(--need); }
+.call-dots i.done { background: #c9d1d5; }

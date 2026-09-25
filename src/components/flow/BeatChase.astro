@@ -1,0 +1,63 @@
+---
+// Beat 3 of 4: chased to paid. Day 14, still unpaid: a chaser is drafted in
+// the owner's voice; Approve sends it; it's paid two days later. Approve here
+// also flips the invoice in beat 2 to Paid and moves the money in beat 4.
+import Icon from './Icon.astro';
+import { formatMoney } from '../../lib/money';
+import { type Trade, followedJob } from '../../data/trades';
+
+interface Props { trade: Trade }
+const { trade: t } = Astro.props;
+const j = followedJob(t);
+const money = formatMoney(j.pricePence, 'GBP');
+---
+<section class="beat" id="beat-3" aria-labelledby="beat-3-title">
+  <p class="beat-meta"><span>Step 3 of 4</span><span class="area"><Icon name="pound" size={16} /> Money</span></p>
+  <h2 id="beat-3-title">Chased, so you don't have to</h2>
+
+  <div data-stop="chased">
+    <ol class="track rv" aria-label="What happened to the invoice">
+      <li class="t-step"><span class="t-dot sent"></span><span class="t-day">Day 0</span><span class="t-what">Invoice sent</span></li>
+      <li class="t-step"><span class="t-dot over"></span><span class="t-day">Day 14</span><span class="t-what over-txt"><Icon name="alert" size={14} /> Not paid</span></li>
+      <li class="t-step"><span class="t-dot sys"></span><span class="t-day">Day 14</span><span class="t-what">Chaser drafted</span></li>
+    </ol>
+
+    <div class="draft rv" data-draft data-effect="paid">
+      <p class="d-text" data-text>Hi <span data-bind="first">{j.first}</span>, just a nudge on invoice {j.invoice} for the <span data-bind="work-lc">{j.work.toLowerCase()}</span>, {money}. Bank details are on the invoice. Thanks, <span data-bind="owner">{t.owner}</span></p>
+      <div class="d-actions">
+        <button class="approve" type="button" data-approve>Approve and send</button>
+        <button class="textlink" type="button" data-edit data-done-label="Done">Edit</button>
+      </div>
+      <p class="d-done" data-done hidden><Icon name="check" size={16} /> Sent. <span>Paid two days later: {money} in.</span></p>
+    </div>
+  </div>
+  <p class="who">Polite, in your words, only when you say so. Nobody's chasing at 10pm.</p>
+</section>
+
+<style>
+  .beat { background: var(--panel); border-radius: 20px; padding: var(--s5) var(--s4); }
+  .beat-meta { display: flex; justify-content: space-between; margin: 0 0 var(--s2); font-size: var(--text-sm); color: var(--ink-3); }
+  .area { display: inline-flex; align-items: center; gap: 4px; color: var(--ink-2); font-weight: var(--w-semi); }
+  h2 { margin: 0 0 var(--s5); font-size: var(--text-lg); font-weight: var(--w-bold); line-height: var(--lead-snug); }
+  .track { list-style: none; margin: 0 0 var(--s4); padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); position: relative; }
+  .track::before { content: ''; position: absolute; left: 8px; right: 8px; top: 7px; height: 2px; background: var(--rule); }
+  .t-step { position: relative; display: grid; gap: 2px; }
+  .t-dot { width: 16px; height: 16px; border-radius: 999px; border: 3px solid var(--panel); }
+  .t-dot.sent { background: var(--sys); }
+  .t-dot.over { background: var(--over); }
+  .t-dot.sys { background: var(--need); }
+  .t-day { font-size: var(--text-xs); color: var(--ink-3); margin-top: var(--s1); }
+  .t-what { font-size: var(--text-sm); font-weight: var(--w-semi); display: inline-flex; align-items: center; gap: 4px; }
+  .over-txt { color: var(--over); }
+  .draft { max-width: 92%; margin-left: auto; background: var(--sys-tint); border-radius: 16px 4px 16px 16px; padding: var(--s3) var(--s4); }
+  .d-text { margin: 0; line-height: var(--lead-snug); }
+  .d-text[contenteditable='true'] { outline: none; background: var(--panel); border-radius: 10px; padding: var(--s2) var(--s3); margin: calc(var(--s2) * -1) calc(var(--s3) * -1); box-shadow: 0 0 0 2px var(--sys); }
+  .d-actions { display: flex; align-items: center; gap: var(--s4); margin-top: var(--s3); }
+  .approve { min-height: 48px; padding: 0 var(--s5); border: 0; border-radius: 14px; background: var(--need); color: var(--ink); font: inherit; font-weight: var(--w-semi); cursor: pointer; box-shadow: inset 0 -2px 0 rgba(20, 20, 20, 0.1), 0 4px 12px -4px rgba(178, 120, 0, 0.45); }
+  .approve:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--ink); }
+  .d-done { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: var(--s3) 0 0; color: var(--done); font-weight: var(--w-semi); }
+  .d-done span { color: var(--ink-2); font-weight: var(--w-reg); }
+  .d-done[hidden], .d-actions[hidden] { display: none; }
+  .who { margin: var(--s5) 0 0; padding-top: var(--s4); border-top: var(--rule-w) solid var(--rule); color: var(--ink-2); font-size: var(--text-sm); }
+  @media (max-width: 520px) { .approve { flex: 1; } }
+</style>

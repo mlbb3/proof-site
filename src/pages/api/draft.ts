@@ -42,7 +42,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   }
   if (limited(ip)) return json({ error: 'limited' }, 429);
 
-  let payload: { enquiry?: unknown; trade?: unknown };
+  let payload: { enquiry?: unknown; trade?: unknown; owner?: unknown; firm?: unknown };
   try {
     payload = await request.json();
   } catch {
@@ -52,6 +52,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const enquiry = raw.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, MAX_CHARS);
   if (!enquiry) return json({ error: 'bad_request' }, 400);
   const trade = TRADES[typeof payload.trade === 'string' ? payload.trade : 'default'] ?? TRADES.default;
+  // Optional names from the reader's link. Letters, digits and simple
+  // punctuation only, short, so they can't carry instructions into the prompt.
+  const clean = (v: unknown) =>
+    typeof v === 'string' ? v.replace(/[^\p{L}\p{N} '&.,-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 30) : '';
+  const who = { owner: clean(payload.owner), firm: clean(payload.firm) };
 
   const client = new Anthropic({ apiKey: key });
   try {
@@ -60,7 +65,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       max_tokens: 300,
       betas: ['server-side-fallback-2026-07-01'],
       output_config: { effort: 'low' as const },
-      system: draftSystemPrompt(trade),
+      system: draftSystemPrompt(trade, who),
       messages: [{ role: 'user' as const, content: enquiry }],
     };
     // `fallbacks: "default"` routes a policy refusal to a fallback model inside

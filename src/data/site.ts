@@ -126,13 +126,16 @@ export const REPLY = {
 export const FLOW = {
   sub: "This lands on your phone at 7 every morning. Tap the job to see how it got there.",
   honesty: 'Worked example. The firm and the figures are made up.',
+  /** When the link carries the reader's own firm or job. */
+  honestyPersonal: 'Worked example with your details in. The figures are made up.',
   follow: 'Follow this job',
   replyReady: 'Reply ready',
   beat1: {
     step: 'Step 1 of 4',
     area: 'Enquiries',
     title: "The message comes in while you're up a ladder",
-    drafted: (owner: string) => `Drafted in ${owner}'s voice, two minutes later`,
+    /** Split round the owner's name, which the link can change. */
+    drafted: ['Drafted in ', "'s voice, two minutes later"] as const,
     approve: 'Approve and send',
     edit: 'Edit',
     sent: 'Sent',
