@@ -1,0 +1,34 @@
+---
+// Short top: who, the personal line, the headline, one line. The morning
+// email follows straight after, so the system is in the first screen.
+import { IDENTITY, HERO, FLOW, WA_HREF } from '../../data/site';
+import type { Trade } from '../../data/trades';
+interface Props { trade: Trade }
+const { trade } = Astro.props;
+---
+<header class="hero">
+  <div class="who">
+    <span class="mono" aria-hidden="true">{IDENTITY.monogram}</span>
+    <span class="who-text"><span class="who-name">{IDENTITY.name}</span><span class="who-role">{IDENTITY.role}</span></span>
+    <a class="wa" href={WA_HREF}>WhatsApp</a>
+  </div>
+  <p class="personal" id="personal-line" hidden></p>
+  {trade.kicker && <p class="kicker">{trade.kicker}</p>}
+  <h1>{HERO.headline} <span class="accent">{HERO.emphasis}</span></h1>
+  <p class="sub">{FLOW.sub}</p>
+</header>
+<style>
+  .hero { padding: var(--s5) 0 var(--s4); }
+  .who { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s5); }
+  .mono { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 999px; background: var(--sys); color: #fff; font-weight: var(--w-bold); font-size: var(--text-sm); flex: 0 0 auto; }
+  .who-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+  .who-name { font-weight: var(--w-bold); }
+  .who-role { color: var(--ink-2); font-size: var(--text-xs); }
+  .wa { margin-left: auto; flex: 0 0 auto; padding: 6px 12px; border-radius: 999px; background: var(--sys); color: #fff; font-weight: var(--w-semi); font-size: var(--text-sm); text-decoration: none; }
+  .personal { margin: 0 0 var(--s2); font-weight: var(--w-medium); }
+  .personal[hidden] { display: none; }
+  .kicker { margin: 0 0 var(--s1); color: var(--sys); font-weight: var(--w-semi); }
+  h1 { margin: 0 0 var(--s2); font-size: var(--text-xl); font-weight: var(--w-bold); line-height: var(--lead-tight); letter-spacing: -0.02em; }
+  .accent { color: var(--sys); }
+  .sub { margin: 0; color: var(--ink-2); font-size: var(--text-md); max-width: 40ch; }
+</style>

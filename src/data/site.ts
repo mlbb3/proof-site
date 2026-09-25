@@ -122,4 +122,33 @@ export const REPLY = {
   under: "Or call me back. You've got the number.",
 };
 
+// ---- Follow one job (brief v2) --------------------------------------------
+export const FLOW = {
+  sub: "This lands on your phone at 7 every morning. Tap the job to see how it got there.",
+  honesty: 'Worked example. The firm and the figures are made up.',
+  follow: 'Follow this job',
+  replyReady: 'Reply ready',
+  beat1: {
+    step: 'Step 1 of 4',
+    area: 'Enquiries',
+    title: "The message comes in while you're up a ladder",
+    drafted: (owner: string) => `Drafted in ${owner}'s voice, two minutes later`,
+    approve: 'Approve and send',
+    edit: 'Edit',
+    sent: 'Sent',
+    next: 'Next, it goes in the diary.',
+    who: 'You, or whoever does your books, approves. Nothing goes out without a tap.',
+    tryLabel: "Try it with a message from one of your customers",
+    tryPlaceholder: "Paste or type what they sent you",
+    tryButton: 'Draft a reply',
+    trySample: 'Sample reply. The live service is resting.',
+    tryLive: 'Drafted just now. Nothing was sent.',
+  },
+  close: {
+    line: "We start with whatever's costing you most. The first part is live within days.",
+    button: 'WhatsApp me',
+    ring: 'Or ring me:',
+  },
+};
+
 export const FOOTER = 'Max Brown. I build the back office for small businesses, and I run it for them.';

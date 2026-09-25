@@ -10,7 +10,7 @@
 
 html {
   color-scheme: light;
-  background: var(--panel);
+  background: var(--ground);
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -18,7 +18,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--panel);
+  background: var(--ground);
   color: var(--ink);
   font-family: var(--font);
   font-size: var(--text-base);
@@ -191,4 +191,16 @@ time,
   html {
     scroll-behavior: auto;
   }
+}
+
+/* Reveal: only when JS has set .motion on <html>; content is visible without it. */
+.motion .rv {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.motion .rv.in {
+  opacity: 1;
+  transform: none;
 }

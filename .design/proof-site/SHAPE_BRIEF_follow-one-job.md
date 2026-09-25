@@ -1,4 +1,4 @@
-# Shape brief: follow one job (v2, 25 Sep 2026, revised after stress test, AWAITING CONFIRMATION)
+# Shape brief: follow one job (v2, 25 Sep 2026, revised after stress test, CONFIRMED by Max)
 
 v1 kept in git history. Changes come from STRESS_TEST_follow-one-job.md.
 
@@ -99,8 +99,5 @@ after each Approve; slow network.
 impeccable layout, animate, colorize, typeset; dataviz marks + anatomy and the
 validator on the state palette; GSAP only for call mode and small transforms.
 
-## Open decision (Max)
-All four simulated prospects and the evidence review flagged that removing every
-sign of a real client leaves a sceptic nothing real. Max has asked for the proof
-section to go. Option: keep one quiet line under the CTA ("This runs every
-morning at a café in Amsterdam, 39 mornings in a row so far"), or nothing.
+## Decided
+No mention of real clients anywhere on the page (Max, 25 Sep, after the stress test raised it).

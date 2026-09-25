@@ -16,6 +16,8 @@ export interface Enquiry {
   summary: string;
   /** Only the first enquiry carries a visible draft. */
   draft?: string;
+  /** The customer's own words, for the chat bubble. First enquiry only. */
+  message?: string;
 }
 export interface Invoice {
   supplier: string;
@@ -86,6 +88,7 @@ const plumbing: Trade = {
   staff: ['Tom Reeve', 'Priya Nair', 'Callum Doyle', 'Aisha Bello', 'Marcus Whitfield', 'Jodie Lam'],
   enquiries: [
     { time: '18:42', from: 'Ben Carrick', place: 'Maidstone', channel: 'WhatsApp', summary: 'Boiler making a banging noise, wants someone this week',
+      message: "Hi, the boiler's making a banging noise every time the heating comes on. Can someone come this week?",
       draft: "Hi Ben, thanks for getting in touch. Tom can be with you Thursday morning if that works. Is the noise there all the time, or just when it fires up?" },
     { time: '20:15', from: 'Lena Kowalski', place: 'Tonbridge', channel: 'Web form', summary: 'Quote for moving a radiator, sends two photos' },
     { time: '22:03', from: 'Harbour View Guest House', place: 'Whitstable', channel: 'Email', summary: 'Annual gas safety certs for 9 rooms, asks for dates in October' },
@@ -139,6 +142,7 @@ const clearance: Trade = {
   staff: ['Dean Mabbott', 'Sam Okoro', 'Lewis Grant', 'Tara Byrne', 'Kofi Mensah', 'Carla Rossi'],
   enquiries: [
     { time: '18:20', from: 'Margaret Ellis', place: 'Croydon', channel: 'Phone', summary: 'Full clearance of her late father\'s flat, needs it done before the 30th',
+      message: "Hello, I need my late father's flat cleared before the 30th. Could someone come and have a look?",
       draft: "Hi Margaret, thanks for calling, and sorry for your loss. We can come and take a look Wednesday afternoon if that suits. Roughly how many rooms are we clearing?" },
     { time: '19:55', from: 'Ashworth Lettings', place: 'Streatham', channel: 'Email', summary: 'End of tenancy clearance, 2 bed, keys with the agent' },
     { time: '21:30', from: 'Tom Bradley', place: 'Sutton', channel: 'WhatsApp', summary: 'Garage and shed, mostly timber and old paint tins' },
@@ -192,6 +196,7 @@ const roofing: Trade = {
   staff: ['Jack Hollis', 'Ryan Patel', 'Connor Walsh', 'Ade Bakare', 'Liam Fry', 'Nicola Dunn'],
   enquiries: [
     { time: '17:50', from: 'Paul Redmond', place: 'Uckfield', channel: 'WhatsApp', summary: 'Water coming in round the chimney after last night\'s rain',
+      message: "Hi, water's coming in round the chimney after last night's rain. Can you come this week?",
       draft: "Hi Paul, thanks for the message. Jack can come and have a look Tuesday morning if that works. Is it coming through the ceiling, or just staining so far?" },
     { time: '19:30', from: 'Sarah Lindqvist', place: 'Lewes', channel: 'Web form', summary: 'Quote for a full re-roof, 1930s semi, sends three photos' },
     { time: '21:12', from: 'Oakwood Property', place: 'Haywards Heath', channel: 'Email', summary: 'Flat roof survey on a block of six, wants a date in October' },
@@ -245,6 +250,7 @@ const electrical: Trade = {
   staff: ['Owen Price', 'Zara Hussain', 'Danny Coyle', 'Femi Adeyemi', 'Kate Morgan'],
   enquiries: [
     { time: '18:05', from: 'Helen Barrow', place: 'Bedminster', channel: 'WhatsApp', summary: 'Consumer unit keeps tripping, wants someone this week',
+      message: "Hi, the consumer unit keeps tripping. Could someone come out this week?",
       draft: "Hi Helen, thanks for getting in touch. Owen can be with you Wednesday afternoon if that suits. Is it one circuit that trips, or the whole board?" },
     { time: '19:48', from: 'Marcus Stein', place: 'Clifton', channel: 'Web form', summary: 'Quote for an EV charger, driveway, sends a photo of the fuse board' },
     { time: '21:40', from: 'Kingsdown Dental', place: 'Kingsdown', channel: 'Email', summary: 'EICR on the practice before the lease renews, dates in October' },
@@ -297,6 +303,7 @@ const building: Trade = {
   staff: ['Pete Holroyd', 'Josh Kaur', 'Andy Ferris', 'Luke Obi', 'Shaun Beck', 'Emma Lister'],
   enquiries: [
     { time: '18:15', from: 'Claire Denton', place: 'Horsforth', channel: 'WhatsApp', summary: 'Single storey rear extension, has plans, wants a quote',
+      message: "Hi, we've got plans for a single storey rear extension. Could you come and quote for it?",
       draft: "Hi Claire, thanks for the message. Pete can come round Thursday morning to walk through the plans if that works. Have you got building regs drawings as well, or just the planning set?" },
     { time: '19:20', from: 'Nadia Rahman', place: 'Roundhay', channel: 'Web form', summary: 'Garage conversion to a home office, sends four photos' },
     { time: '21:55', from: 'Kirkstall Lettings', place: 'Kirkstall', channel: 'Email', summary: 'Damp survey and repair on two flats, wants dates in October' },
@@ -350,6 +357,7 @@ const lettings: Trade = {
   staff: ['Amy Chen', 'Jordan Mills', 'Priya Shah', 'Ben Tully', 'Hannah Reid'],
   enquiries: [
     { time: '18:30', from: 'Daniel Okafor', place: 'Didsbury', channel: 'Web form', summary: 'Wants to view the 2 bed on Barlow Moor Road this week',
+      message: "Hi, is the 2 bed on Barlow Moor Road still available? Could I view it this week?",
       draft: "Hi Daniel, thanks for getting in touch. We can show you round Wednesday afternoon if that suits. Would you be looking to move in before the end of the month?" },
     { time: '19:10', from: 'Mrs Patterson (landlord)', place: 'Chorlton', channel: 'Email', summary: 'Tenant reports boiler not firing, flat 3, wants it sorted' },
     { time: '21:25', from: 'Lucy Grant', place: 'Withington', channel: 'WhatsApp', summary: 'Asking if the studio on Wilmslow Road allows a cat' },
@@ -402,6 +410,7 @@ const gardening: Trade = {
   staff: ['Will Turner', 'Meg Foster', 'Alfie Doyle', 'Raj Sandhu', 'Jo Barratt'],
   enquiries: [
     { time: '17:40', from: 'Alison Reeve', place: 'Guildford', channel: 'WhatsApp', summary: 'Wants the back garden landscaped, patio and lawn, before spring',
+      message: "Hi, we'd like the back garden done, patio and lawn, before spring. Could you come and have a look?",
       draft: "Hi Alison, thanks for the message. Will can come round Tuesday afternoon to have a look if that works. Roughly what size is the garden, and is it level?" },
     { time: '19:05', from: 'The Willows Care Home', place: 'Godalming', channel: 'Email', summary: 'Fortnightly grounds maintenance contract, asks for a quote' },
     { time: '20:50', from: 'Ian Blackwood', place: 'Farnham', channel: 'Web form', summary: 'Two large conifers taken down, sends a photo' },
