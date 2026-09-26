@@ -9,8 +9,11 @@ export default defineConfig({
   output: 'static',
   devToolbar: { enabled: false },
   adapter: vercel(),
-  // Canonical URL. Set to the real domain when it lands; og:url depends on it.
-  site: 'https://example.com',
+  // Canonical URL and the base for the link-preview image. Vercel sets the
+  // production address at build time (the custom domain once there is one).
+  site: process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'https://proof-site-xi.vercel.app',
   build: {
     // One inlined stylesheet keeps the WhatsApp webview from blocking on CSS.
     inlineStylesheets: 'always',

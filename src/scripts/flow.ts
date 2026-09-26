@@ -5,6 +5,9 @@
 //  - Approve: each one moves the job on further down the page
 //  - Try it: a real customer message gets a real draft; Approve books it in
 //  - call mode: step through the page on a screen-share
+//  - visits: Vercel Web Analytics, with the ?to name moved into the path so
+//    Max can see who opened it; the other link details are dropped
+import { inject } from '@vercel/analytics';
 import { PERSONAL_LINE, FLOW } from '../data/site';
 
 const root = document.documentElement;
@@ -285,3 +288,16 @@ if (walk && bar && stops.length) {
     else if (e.key === 'Escape') exit();
   });
 }
+
+// ---- Visits -------------------------------------------------------------------
+// /for/roofing/?to=Steve+Harris is recorded as /for/roofing/to/Steve Harris.
+// Firm, town and the customer's message never leave the page.
+inject({
+  beforeSend(event) {
+    const u = new URL(event.url);
+    const who = u.searchParams.get('to')?.trim().slice(0, 40);
+    u.search = '';
+    if (who) u.pathname = `${u.pathname.replace(/\/?$/, '/')}to/${encodeURIComponent(who)}`;
+    return { ...event, url: u.toString() };
+  },
+});

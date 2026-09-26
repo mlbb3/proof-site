@@ -1,12 +1,11 @@
-// The per-trade worked example. One dataset per URL; the brief, all six
-// evidence blocks and the replay render from it. Change a number here and it
-// changes everywhere. Numbers in the brief are computed from these rows, never
-// typed, so a line can never disagree with its evidence.
+// The per-trade worked example. One dataset per URL; the morning email and the
+// four beats render from it. Change a number here and it changes everywhere.
+// Figures are computed from these rows, never typed, so no two parts of the
+// page can disagree.
 //
 // HONESTY: every firm here is made up and the page says so. Names are ordinary,
-// numbers are boring and plausible. The real, live builds (cafe, creator) are
-// named separately in the proof section. Dates are relative words on purpose,
-// so a static build never goes stale.
+// numbers are boring and plausible. Dates are relative words on purpose, so a
+// static build never goes stale.
 
 export interface Enquiry {
   time: string;
@@ -507,15 +506,6 @@ export const TRADE_PAGES = Object.values(TRADES).filter((t) => t.slug !== 'defau
 // can never disagree.
 // ---------------------------------------------------------------------------
 
-export function invoiceTotalPence(t: Trade): number {
-  return t.invoices.reduce((s, i) => s + i.totalPence, 0);
-}
-export function plannedHours(t: Trade): number {
-  return t.timesheet.reduce((s, r) => s + r.planned, 0);
-}
-export function loggedHours(t: Trade): number {
-  return t.timesheet.reduce((s, r) => s + r.logged, 0);
-}
 export function priceDriftPct(t: Trade): number {
   const flagged = t.prices.find((p) => p.flagged) ?? t.prices[t.prices.length - 1];
   const first = t.prices[0];
@@ -525,12 +515,6 @@ export function cheaperByPence(t: Trade): number {
   const flagged = t.prices.find((p) => p.flagged)!;
   const rival = t.prices.find((p) => p.when === flagged.when && p.supplier !== flagged.supplier);
   return rival ? flagged.unitPence - rival.unitPence : 0;
-}
-export function hoursGapRow(t: Trade): TimesheetRow | undefined {
-  return t.timesheet.find((r) => r.note);
-}
-export function fmtHours(h: number): string {
-  return Number.isInteger(h) ? String(h) : h.toFixed(1);
 }
 
 /** The one job the page follows, with everything the beats need, derived once. */
