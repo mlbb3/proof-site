@@ -1,0 +1,20 @@
+---
+import { FLOW, WA_HREF, TEL_HREF, IDENTITY } from '../../data/site';
+---
+<section class="close">
+  <p class="line">{FLOW.close.line}</p>
+  <a class="btn" href={WA_HREF}>
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.6.8 2 .9 2.1.1.1.1.3 0 .5-.1.2-.2.3-.3.5l-.4.4c-.2.2-.3.3-.1.6.2.3.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.3.1 1.7.8 2 .9.3.2.5.2.5.3.1.2.1.6-.1 1.2Z"></path></svg>
+    {FLOW.close.button}
+  </a>
+  <p class="ring">{FLOW.close.ring} <a href={TEL_HREF}>{IDENTITY.phoneDisplay}</a></p>
+  <p class="honesty" data-honesty>{FLOW.honesty}</p>
+</section>
+<style>
+  .close { padding: var(--s6) 0 var(--s8); text-align: center; }
+  .line { margin: 0 auto var(--s4); max-width: 32ch; font-size: var(--text-md); }
+  .ring { margin: var(--s3) 0 0; color: var(--ink-2); font-size: var(--text-sm); }
+  .ring a { color: var(--sys); font-weight: var(--w-semi); }
+  .honesty { margin: var(--s4) 0 0; font-size: var(--text-xs); color: var(--ink-3); }
+  @media (max-width: 520px) { .btn { display: flex; width: 100%; } }
+</style>

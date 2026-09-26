@@ -1,0 +1,93 @@
+---
+// Beat 2 of 4: booked, done, invoiced. The diary for next week as an agenda;
+// the followed job's slot is the one Approve in beat 1 put there. Then the
+// job is done and the invoice goes. End state renders without JS; with JS the
+// new slot waits (dashed) until beat 1 is approved.
+import Icon from './Icon.astro';
+import { formatMoney } from '../../lib/money';
+import { type Trade, followedJob } from '../../data/trades';
+
+interface Props { trade: Trade }
+const { trade: t } = Astro.props;
+const j = followedJob(t);
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as const;
+const others = t.jobs.filter((x) => x.customer !== j.from);
+---
+<section class="beat" id="beat-2" aria-labelledby="beat-2-title">
+  <p class="beat-meta"><span>Step 2 of 4</span><span class="area"><Icon name="calendar" size={16} /> Diary</span></p>
+  <h2 id="beat-2-title">Booked, done, invoiced</h2>
+
+  <ol class="agenda rv" data-stop="booked" aria-label="Next week's diary">
+    {days.map((d) => (
+      <li class="day" data-day={d}>
+        <span class="dname">{d}</span>
+        <span class="slots">
+          {d === j.slotDay && (
+            <span class="slot new" data-new-slot>
+              <span class="s-time">{j.slotTime}</span>
+              <span class="s-who"><span data-bind="customer">{j.from}</span></span>
+              <span class="s-what" data-bind="work">{j.work}</span>
+              <span class="chip-new" data-slot-state>Booked</span>
+            </span>
+          )}
+          {others.filter((o) => o.when === d).map((o) => (
+            <span class="slot">
+              <span class="s-who">{o.customer}</span>
+              <span class="s-what">{o.job}</span>
+            </span>
+          ))}
+          {d === 'Fri' && <span class="free" data-free>Free</span>}
+        </span>
+      </li>
+    ))}
+  </ol>
+
+  <div data-stop="invoiced">
+  <p class="sys-line rv"><span class="sys-dot" aria-hidden="true"></span> Job done {j.slotDay === 'Tue' ? 'Tuesday' : j.slotDay === 'Wed' ? 'Wednesday' : j.slotDay === 'Thu' ? 'Thursday' : j.slotDay === 'Mon' ? 'Monday' : 'Friday'}. Invoice drafted and sent that evening.</p>
+
+  <article class="invoice rv" aria-label="Invoice">
+    <header class="inv-head">
+      <span class="inv-no">Invoice {j.invoice}</span>
+      <span class="inv-state sent" data-invoice-state><Icon name="check" size={14} /> <span data-invoice-label>Sent</span></span>
+    </header>
+    <p class="inv-to">To <span data-bind="customer">{j.from}</span>, <span data-bind="town">{j.place}</span></p>
+    <p class="inv-line"><span data-bind="work">{j.work}</span><span class="amt">{formatMoney(j.pricePence, 'GBP')}</span></p>
+    <p class="inv-due">Due in 14 days. Bank details on the invoice.</p>
+  </article>
+  </div>
+</section>
+
+<style>
+  .beat { background: var(--panel); border-radius: 20px; padding: var(--s5) var(--s4); }
+  .beat-meta { display: flex; justify-content: space-between; margin: 0 0 var(--s2); font-size: var(--text-sm); color: var(--ink-3); }
+  .area { display: inline-flex; align-items: center; gap: 4px; color: var(--ink-2); font-weight: var(--w-semi); }
+  h2 { margin: 0 0 var(--s5); font-size: var(--text-lg); font-weight: var(--w-bold); line-height: var(--lead-snug); }
+  .agenda { list-style: none; margin: 0; padding: 0; border-top: var(--rule-w) solid var(--rule); }
+  .day { display: grid; grid-template-columns: 3rem 1fr; gap: var(--s3); padding: var(--s2) 0; border-bottom: var(--rule-w) solid var(--rule); }
+  .dname { font-weight: var(--w-semi); color: var(--ink-2); padding-top: 6px; }
+  .slots { display: grid; gap: var(--s1); }
+  .slot { display: grid; grid-template-columns: auto 1fr auto; column-gap: var(--s2); align-items: baseline; background: var(--tile); border-radius: 10px; padding: 6px 10px; font-size: var(--text-sm); }
+  .s-time { font-weight: var(--w-bold); font-variant-numeric: var(--figures); }
+  .s-who { font-weight: var(--w-semi); grid-column: 2; }
+  .slot:not(.new) .s-who { grid-column: 1 / 3; }
+  .s-what { grid-column: 1 / -1; color: var(--ink-2); font-size: var(--text-xs); }
+  .slot.new .s-what { grid-column: 2 / 4; }
+  .slot.new { background: var(--sys-tint); box-shadow: inset 0 0 0 2px var(--sys); }
+  .chip-new { grid-column: 3; grid-row: 1; font-size: var(--text-xs); font-weight: var(--w-semi); color: var(--sys); }
+  .slot.new.pending { background: var(--panel); box-shadow: inset 0 0 0 2px var(--rule); }
+  .slot.new.pending .chip-new { color: var(--ink-3); }
+  .free { color: var(--ink-3); font-size: var(--text-sm); padding-top: 6px; }
+  .sys-line { display: flex; align-items: center; gap: var(--s2); margin: var(--s5) 0 var(--s3); font-size: var(--text-sm); color: var(--sys); font-weight: var(--w-semi); }
+  .sys-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--sys); box-shadow: 0 0 0 4px var(--sys-tint); flex: 0 0 auto; }
+  .invoice { border: var(--rule-w) solid var(--rule); border-radius: 12px; padding: var(--s4); box-shadow: 0 1px 2px rgba(20, 30, 36, 0.05); }
+  .inv-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: var(--s2); border-bottom: 2px solid var(--ink); }
+  .inv-no { font-weight: var(--w-bold); font-variant-numeric: var(--figures); }
+  .inv-state { display: inline-flex; align-items: center; gap: 4px; font-size: var(--text-xs); font-weight: var(--w-semi); padding: 2px 8px; border-radius: 999px; }
+  .inv-state.sent { background: var(--sys-tint); color: var(--sys); }
+  .inv-state.paid { background: var(--done-tint); color: var(--done); }
+  .inv-state.over { background: var(--over-tint); color: var(--over); }
+  .inv-to { margin: var(--s3) 0 var(--s2); color: var(--ink-2); font-size: var(--text-sm); }
+  .inv-line { display: flex; justify-content: space-between; gap: var(--s3); margin: 0; font-weight: var(--w-semi); }
+  .amt { font-variant-numeric: var(--figures); }
+  .inv-due { margin: var(--s2) 0 0; font-size: var(--text-xs); color: var(--ink-3); }
+</style>

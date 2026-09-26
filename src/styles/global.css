@@ -61,3 +61,160 @@ time,
   outline: none;
   box-shadow: var(--focus-ring);
 }
+
+/* ---- Shared page vocabulary: the job sheet ---------------------------- */
+
+/* The one highlighter. Behind text that needs the owner, and nowhere else.
+   Uneven corners and a longer run-out on the right, the way a marker lands. */
+.mark {
+  background: linear-gradient(transparent 10%, var(--mark) 10% 90%, transparent 90%);
+  padding: 0 0.26em 0 0.14em;
+  margin-left: -0.06em;
+  border-radius: 4px 9px 3px 7px / 7px 3px 8px 4px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* The one filled button. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: 52px;
+  padding: 0 var(--s6);
+  background: var(--teal);
+  color: #fff;
+  font-weight: var(--w-semi);
+  font-size: var(--text-md);
+  text-decoration: none;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--ink);
+}
+.btn-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: 44px;
+  padding: 0 var(--s5);
+  background: var(--panel);
+  color: var(--teal);
+  font-weight: var(--w-semi);
+  font-size: var(--text-base);
+  border: 2px solid var(--teal);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-line[disabled],
+.btn[disabled] {
+  opacity: 0.55;
+  cursor: default;
+}
+.textlink {
+  color: var(--teal);
+  font-weight: var(--w-medium);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Ruled tables: the paperwork. Real tables, header row, grey rules. */
+.ruled-wrap {
+  overflow-x: auto;
+}
+.ruled {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+@media (max-width: 520px) {
+  .ruled .hide-sm {
+    display: none;
+  }
+}
+.ruled th,
+.ruled td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--s3) var(--s3) var(--s3) 0;
+  border-bottom: var(--rule-w) solid var(--rule);
+}
+.ruled th {
+  font-weight: var(--w-semi);
+  color: var(--ink-2);
+  border-bottom: 2px solid var(--rule-strong);
+  white-space: nowrap;
+}
+.ruled td {
+  color: var(--ink);
+}
+.ruled .num {
+  font-variant-numeric: var(--figures);
+  text-align: right;
+  white-space: nowrap;
+}
+.ruled th.num {
+  text-align: right;
+}
+.ruled .ok {
+  color: var(--sage);
+  font-weight: var(--w-semi);
+  white-space: nowrap;
+}
+.ruled tfoot td {
+  font-weight: var(--w-bold);
+  border-bottom: 0;
+  border-top: 2px solid var(--rule-strong);
+}
+.ruled .muted {
+  color: var(--ink-2);
+}
+
+/* Prose measure everywhere text is read. */
+.measure {
+  max-width: 62ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Reveal: only when JS has set .motion on <html>; content is visible without it. */
+.motion .rv {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.motion .rv.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Call mode: Max screen-shares and steps through the [data-stop] elements.
+   Bigger type, one column, what's been covered dims, what's ahead stays hidden. */
+html.call { font-size: 118%; }
+html.call main { display: block; max-width: 40rem; padding-bottom: 8rem; }
+html.call #col-a { position: static; }
+html.call .col-b { margin-top: var(--s6); padding-top: 0; }
+.call [data-stop] { scroll-margin: 1.5rem 0 7rem; transition: opacity 0.3s var(--ease-out); }
+.call [data-stop].past { opacity: 0.3; }
+.call [data-stop].ahead,
+.call .ahead { visibility: hidden; }
+.call-dots i { display: block; width: 8px; height: 8px; border-radius: 999px; background: var(--ink-2); }
+.call-dots i.on { background: var(--need); }
+.call-dots i.done { background: var(--track); }

@@ -1,6 +1,8 @@
 ---
-import Base from '../layouts/Base.astro';
+// The home page: the worked example with no trade framing. Sent to anyone Max
+// has spoken to whose trade does not have its own page yet.
+import Page from '../components/Page.astro';
+import { TRADES } from '../data/trades';
 ---
-<Base title="Max Brown, back-office automation" description="Working example. Copy is written last.">
-  <main><p>[ rebuilding ]</p></main>
-</Base>
+
+<Page trade={TRADES.default} />

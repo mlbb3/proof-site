@@ -1,5 +1,5 @@
 ---
-// Shared shell for the spine and every spoke.
+// Shared shell for every page.
 // Sets light-mode, viewport, canonical, and the social preview.
 import '../styles/fonts.css';
 import '../styles/tokens.css';
@@ -8,10 +8,13 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  /** Private pages (the link maker): kept out of search and analytics. */
+  hidden?: boolean;
 }
 
-const { title, description = '' } = Astro.props;
+const { title, description = '', hidden = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
 ---
 
 <!doctype html>
@@ -20,13 +23,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
+    {hidden && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <slot />

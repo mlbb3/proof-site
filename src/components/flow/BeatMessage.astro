@@ -1,0 +1,174 @@
+---
+// Beat 1 of 4: the message and the reply. The customer's words arrive as a
+// chat bubble; the system drafts a reply in the owner's voice; the owner taps
+// Approve and it goes. The one genuinely live thing sits here too: paste a
+// real customer message and get a real draft back (sample when resting).
+import Icon from './Icon.astro';
+import type { Trade } from '../../data/trades';
+import { FLOW } from '../../data/site';
+
+interface Props { trade: Trade }
+const { trade: t } = Astro.props;
+const e = t.enquiries[0];
+const B = FLOW.beat1;
+const sample = `Hi, thanks for getting in touch. Someone can come and take a look this week. Could you tell me a bit more about what's happening?`;
+---
+
+<section class="beat" id="beat-1" aria-labelledby="beat-1-title">
+  <p class="beat-meta"><span>{B.step}</span><span class="area"><Icon name="chat" size={16} /> {B.area}</span></p>
+  <h2 id="beat-1-title">{B.title}</h2>
+
+  <div class="thread">
+    <div class="bubble rv" style="--i:0" data-stop="b1-msg">
+      <p class="b-who"><span data-bind="customer">{e.from}</span> <span class="b-when">{e.channel}, {e.time}</span></p>
+      <p class="b-text" data-bind="message">{e.message ?? e.summary}</p>
+    </div>
+
+    <div class="reply" data-stop="b1-reply">
+    <p class="sys-line rv" style="--i:1"><span class="sys-dot" aria-hidden="true"></span> <span>{B.drafted[0]}<span data-bind="owner">{t.owner}</span>{B.drafted[1]}</span></p>
+
+    <div class="draft rv" style="--i:2" data-draft data-effect="book">
+      <p class="d-text" data-text data-main-draft>{e.draft}</p>
+      <div class="d-actions">
+        <button class="approve" type="button" data-approve>{B.approve}</button>
+        <button class="textlink" type="button" data-edit data-done-label="Done">{B.edit}</button>
+      </div>
+      <p class="d-done" data-done hidden><Icon name="check" size={16} /> {B.sent} {e.time.replace(/:(\d)\d$/, (_, d) => ':' + d + '4')}. <span>{B.next}</span></p>
+    </div>
+    </div>
+  </div>
+
+  <p class="who">{B.who}</p>
+
+  <form class="try" id="try-form" hidden autocomplete="off" data-trade={t.slug} data-sample={sample} data-resting={B.trySample} data-live={B.tryLive}>
+    <label for="try-input">{B.tryLabel}</label>
+    <textarea id="try-input" rows="3" maxlength="300" placeholder={B.tryPlaceholder} required></textarea>
+    <button class="try-btn" type="submit" id="try-btn">{B.tryButton}</button>
+    <div class="draft" id="try-out" hidden data-draft data-effect="cascade">
+      <p class="d-text" id="try-text" data-text></p>
+      <p class="try-note" id="try-note"></p>
+      <div class="d-actions">
+        <button class="approve" type="button" data-approve>{B.approve}</button>
+        <button class="textlink" type="button" data-edit data-done-label="Done">{B.edit}</button>
+      </div>
+      <p class="d-done" data-done hidden><Icon name="check" size={16} /> {B.sent}. <span>In the diary for <b data-cascade-when></b>. <a class="textlink" href="#beat-2">See it</a></span></p>
+    </div>
+  </form>
+</section>
+
+<style>
+  .beat {
+    background: var(--panel);
+    border-radius: 20px;
+    padding: var(--s5) var(--s4);
+  }
+  .beat-meta {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 var(--s2);
+    font-size: var(--text-sm);
+    color: var(--ink-3);
+  }
+  .area { display: inline-flex; align-items: center; gap: 4px; color: var(--ink-2); font-weight: var(--w-semi); }
+  h2 {
+    margin: 0 0 var(--s5);
+    font-size: var(--text-lg);
+    font-weight: var(--w-bold);
+    line-height: var(--lead-snug);
+  }
+  .thread { display: grid; gap: var(--s3); }
+  .bubble {
+    justify-self: start;
+    max-width: 88%;
+    background: var(--ground);
+    border-radius: 4px 16px 16px 16px;
+    padding: var(--s3) var(--s4);
+  }
+  .b-who { margin: 0 0 2px; font-weight: var(--w-semi); font-size: var(--text-sm); }
+  .b-when { color: var(--ink-3); font-weight: var(--w-reg); margin-left: 4px; }
+  .reply { display: grid; gap: var(--s3); }
+  .b-text { margin: 0; line-height: var(--lead-snug); }
+  .sys-line {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--sys);
+    font-weight: var(--w-semi);
+  }
+  .sys-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--sys); box-shadow: 0 0 0 4px var(--sys-tint); }
+  .draft {
+    justify-self: end;
+    max-width: 92%;
+    background: var(--sys-tint);
+    border-radius: 16px 4px 16px 16px;
+    padding: var(--s3) var(--s4);
+  }
+  .d-text { margin: 0; line-height: var(--lead-snug); }
+  .d-actions { display: flex; align-items: center; gap: var(--s4); margin-top: var(--s3); }
+  .approve {
+    min-height: 48px;
+    padding: 0 var(--s5);
+    border: 0;
+    border-radius: 14px;
+    background: var(--need);
+    color: var(--ink);
+    font: inherit;
+    font-weight: var(--w-semi);
+    cursor: pointer;
+    box-shadow: inset 0 -2px 0 rgba(20, 20, 20, 0.1), 0 4px 12px -4px rgba(178, 120, 0, 0.45);
+  }
+  .approve:active { transform: translateY(1px); box-shadow: inset 0 -1px 0 rgba(20, 20, 20, 0.1); }
+  .d-text[contenteditable='true'] { outline: none; background: var(--panel); border-radius: 10px; padding: var(--s2) var(--s3); margin: calc(var(--s2) * -1) calc(var(--s3) * -1); box-shadow: 0 0 0 2px var(--sys); }
+  .approve:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--ink); }
+  .d-done {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin: var(--s3) 0 0;
+    color: var(--done);
+    font-weight: var(--w-semi);
+  }
+  .d-done span { color: var(--ink-2); font-weight: var(--w-reg); }
+  .d-done[hidden], .d-actions[hidden], .try[hidden], #try-out[hidden] { display: none; }
+  .who {
+    margin: var(--s5) 0 0;
+    padding-top: var(--s4);
+    border-top: var(--rule-w) solid var(--rule);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+  }
+  .try { display: grid; gap: var(--s2); margin-top: var(--s5); }
+  .try label { font-weight: var(--w-semi); }
+  .try textarea {
+    font: inherit;
+    color: var(--ink);
+    padding: var(--s3) var(--s4);
+    border: var(--rule-w) solid var(--rule);
+    border-radius: 14px;
+    resize: vertical;
+    background: var(--panel);
+  }
+  .try textarea::placeholder { color: var(--ink-2); }
+  .try textarea:focus-visible { outline: none; border-color: var(--sys); box-shadow: 0 0 0 3px var(--sys-tint); }
+  .try { padding-top: var(--s4); border-top: var(--rule-w) solid var(--rule); }
+  .try-btn {
+    justify-self: start;
+    min-height: 44px;
+    padding: 0 var(--s5);
+    border: 2px solid var(--sys);
+    border-radius: 14px;
+    background: var(--panel);
+    color: var(--sys);
+    font: inherit;
+    font-weight: var(--w-semi);
+    cursor: pointer;
+  }
+  .try-btn[disabled] { opacity: 0.55; cursor: default; }
+  .try-note { margin: var(--s2) 0 0; font-size: var(--text-xs); color: var(--ink-2); }
+  @media (max-width: 520px) {
+    .approve { flex: 1; }
+  }
+</style>
